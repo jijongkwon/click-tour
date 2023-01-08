@@ -15,6 +15,12 @@ public class Users {
     private Long id;
 
     @Column(nullable = false)
+    private String id_login;
+
+    @Column(nullable = false)
+    private String password_login;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -32,4 +38,6 @@ public class Users {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String intro;
 
+    @Column
+    private String picture;
 }
