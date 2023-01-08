@@ -29,4 +29,7 @@ public class User {
     @Column
     private String address;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String intro;
+
 }
