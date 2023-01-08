@@ -35,7 +35,7 @@ public class Users {
     @Column
     private String address;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String intro;
 
     @Column
