@@ -1,6 +1,6 @@
 package com.clicktour.clicktour.domain.crew;
 
-import com.clicktour.clicktour.domain.Users;
+import com.clicktour.clicktour.domain.users.Users;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

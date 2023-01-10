@@ -1,4 +1,4 @@
-package com.clicktour.clicktour.domain;
+package com.clicktour.clicktour.domain.users;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

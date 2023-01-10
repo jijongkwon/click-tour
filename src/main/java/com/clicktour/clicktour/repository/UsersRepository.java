@@ -1,6 +1,6 @@
 package com.clicktour.clicktour.repository;
 
-import com.clicktour.clicktour.domain.Users;
+import com.clicktour.clicktour.domain.users.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
