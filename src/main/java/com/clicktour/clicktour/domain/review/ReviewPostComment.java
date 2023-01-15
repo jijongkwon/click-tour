@@ -25,5 +25,4 @@ public class ReviewPostComment {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String comment;
-
 }
