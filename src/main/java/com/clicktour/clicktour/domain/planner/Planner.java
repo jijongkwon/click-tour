@@ -1,6 +1,7 @@
 package com.clicktour.clicktour.domain.planner;
 
 import com.clicktour.clicktour.domain.users.Users;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,4 +36,12 @@ public class Planner {
     @JoinColumn(name = "user_id")
     private Users users;
 
+    @Builder
+    public Planner(String title, Date start_date, Date end_date, String intro, Users users){
+        this.title = title;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.intro = intro;
+        this.users = users;
+    }
 }
