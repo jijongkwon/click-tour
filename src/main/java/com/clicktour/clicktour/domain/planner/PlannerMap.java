@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Getter
+@Table(name = "planner_map")
 public class PlannerMap {
 
     @Id

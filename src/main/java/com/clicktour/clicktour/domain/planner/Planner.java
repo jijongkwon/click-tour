@@ -12,6 +12,7 @@ import java.util.Date;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "planner")
 public class Planner {
 
     @Id
