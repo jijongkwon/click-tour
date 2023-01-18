@@ -19,4 +19,11 @@ public class PlannerService {
     public Long save(PlannerSaveRequestDto requestDto){
         return plannerRepository.save(requestDto.toEntity()).getId();
     }
+
+    @Transactional
+    public PlannerResponseDto findById(Long id){
+        Planner planner = plannerRepository.findById(id).orElseThrow(() -> new
+                IllegalArgumentException("해당 플래너가 존재하지 않습니다. id :" + id));
+        return new PlannerResponseDto(planner);
+    }
 }
