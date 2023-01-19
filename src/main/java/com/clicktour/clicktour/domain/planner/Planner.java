@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,12 +38,18 @@ public class Planner {
     @JoinColumn(name = "user_id")
     private Users users;
 
+    @OneToMany(mappedBy = "planner", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OrderBy("id asc")
+    private List<PlannerMap> plannerMapList;
+
     @Builder
-    public Planner(String title, Date start_date, Date end_date, String intro, Users users){
+    public Planner(String title, Date start_date, Date end_date, String intro, Users users,
+                   List<PlannerMap> plannerMapList){
         this.title = title;
         this.start_date = start_date;
         this.end_date = end_date;
         this.intro = intro;
         this.users = users;
+        this.plannerMapList = plannerMapList;
     }
 }
