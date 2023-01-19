@@ -16,10 +16,7 @@ public class PlannerApiController {
 
     @PostMapping("/api/v1/planner")
     public ResponseEntity<Planner> save(@RequestBody PlannerSaveRequestDto requestDto){
-        if(plannerService.save(requestDto) == 0){
-            return ResponseEntity.notFound().build();
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return plannerService.save(requestDto);
     }
 
     @GetMapping("/api/v1/planner/{id}")
