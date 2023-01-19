@@ -7,7 +7,6 @@ import com.clicktour.clicktour.domain.planner.dto.PlannerSaveRequestDto;
 import com.clicktour.clicktour.repository.PlannerMapRepository;
 import com.clicktour.clicktour.repository.PlannerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +18,12 @@ public class PlannerService {
     private final PlannerMapRepository plannerMapRepository;
 
     @Transactional
-    public ResponseEntity<Planner> save(PlannerSaveRequestDto plannerSaveRequestDto) {
+    public int save(PlannerSaveRequestDto plannerSaveRequestDto) {
 
         // planner 저장
         Planner planner = plannerRepository.save(plannerSaveRequestDto.toEntity());
         if (planner == null) {
-            return ResponseEntity.notFound().build();
+            return 0;
         }
 
         // planner map 저장
@@ -33,10 +32,10 @@ public class PlannerService {
         );
 
         if (plannerMapRepository.save(plannerMapSaveRequestDto.toEntity()).getId() == null) {
-            return ResponseEntity.notFound().build();
+            return 0;
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return 1;
     }
 
     @Transactional
