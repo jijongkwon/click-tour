@@ -1,5 +1,6 @@
 package com.clicktour.clicktour.domain.planner;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +31,13 @@ public class PlannerMap {
 
     @Column(nullable = false)
     private Float y;
+
+    @Builder
+    public PlannerMap(String name, String memo, Float x, Float y, Planner planner){
+        this.name = name;
+        this.memo = memo;
+        this.x = x;
+        this.y = y;
+        this.planner = planner;
+    }
 }
