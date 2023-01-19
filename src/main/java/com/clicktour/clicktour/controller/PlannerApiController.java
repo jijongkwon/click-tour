@@ -1,6 +1,5 @@
 package com.clicktour.clicktour.controller;
 
-import com.clicktour.clicktour.domain.planner.Planner;
 import com.clicktour.clicktour.domain.planner.dto.PlannerResponseDto;
 import com.clicktour.clicktour.domain.planner.dto.PlannerSaveRequestDto;
 import com.clicktour.clicktour.service.planner.PlannerService;
@@ -15,15 +14,15 @@ public class PlannerApiController {
     private final PlannerService plannerService;
 
     @PostMapping("/api/v1/planner")
-    public ResponseEntity save(@RequestBody PlannerSaveRequestDto requestDto){
-        if(plannerService.save(requestDto) == 0){
+    public ResponseEntity save(@RequestBody PlannerSaveRequestDto requestDto) {
+        if (plannerService.save(requestDto) == 0) {
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>("Success 200",HttpStatus.OK);
+        return new ResponseEntity<>("Success 200", HttpStatus.OK);
     }
 
     @GetMapping("/api/v1/planner/{id}")
-    public PlannerResponseDto read(@PathVariable Long id){
+    public PlannerResponseDto read(@PathVariable Long id) {
         return plannerService.findById(id);
     }
 }

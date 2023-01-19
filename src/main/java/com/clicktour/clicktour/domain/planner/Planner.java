@@ -44,7 +44,7 @@ public class Planner {
 
     @Builder
     public Planner(String title, Date start_date, Date end_date, String intro, Users users,
-                   List<PlannerMap> plannerMapList){
+                   List<PlannerMap> plannerMapList) {
         this.title = title;
         this.start_date = start_date;
         this.end_date = end_date;

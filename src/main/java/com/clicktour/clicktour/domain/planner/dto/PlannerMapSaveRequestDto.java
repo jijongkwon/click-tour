@@ -18,8 +18,8 @@ public class PlannerMapSaveRequestDto {
     private Planner planner;
 
     @Builder
-    public PlannerMapSaveRequestDto(List<PlannerMap> plannerMapList, Planner planner){
-        for(PlannerMap plannerMap : plannerMapList){
+    public PlannerMapSaveRequestDto(List<PlannerMap> plannerMapList, Planner planner) {
+        for (PlannerMap plannerMap : plannerMapList) {
             this.name = plannerMap.getName();
             this.memo = plannerMap.getMemo();
             this.x = plannerMap.getX();
@@ -28,7 +28,7 @@ public class PlannerMapSaveRequestDto {
         }
     }
 
-    public PlannerMap toEntity(){
+    public PlannerMap toEntity() {
         return PlannerMap.builder().
                 name(name).
                 x(x).

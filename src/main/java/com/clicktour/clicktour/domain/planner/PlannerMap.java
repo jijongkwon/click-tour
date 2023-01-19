@@ -33,7 +33,7 @@ public class PlannerMap {
     private Float y;
 
     @Builder
-    public PlannerMap(String name, String memo, Float x, Float y, Planner planner){
+    public PlannerMap(String name, String memo, Float x, Float y, Planner planner) {
         this.name = name;
         this.memo = memo;
         this.x = x;
