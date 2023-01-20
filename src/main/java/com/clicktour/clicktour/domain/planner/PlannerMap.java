@@ -3,8 +3,10 @@ package com.clicktour.clicktour.domain.planner;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @NoArgsConstructor
@@ -27,15 +29,20 @@ public class PlannerMap {
     private String memo;
 
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private Date date;
+
+    @Column(nullable = false)
     private Float x;
 
     @Column(nullable = false)
     private Float y;
 
     @Builder
-    public PlannerMap(String name, String memo, Float x, Float y, Planner planner) {
+    public PlannerMap(String name, String memo, Date date, Float x, Float y, Planner planner) {
         this.name = name;
         this.memo = memo;
+        this.date = date;
         this.x = x;
         this.y = y;
         this.planner = planner;
