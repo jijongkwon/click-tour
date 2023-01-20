@@ -17,7 +17,7 @@ public class PlannerApiController {
         if (plannerService.save(requestDto) == 0) {
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>("Success 200", HttpStatus.OK);
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
     @GetMapping("/api/v1/planner/{id}")
@@ -25,6 +25,6 @@ public class PlannerApiController {
         if(plannerService.findById(id) == null){
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>("Success 200", HttpStatus.OK);
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 }
