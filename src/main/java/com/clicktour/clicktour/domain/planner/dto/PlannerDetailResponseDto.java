@@ -1,7 +1,6 @@
 package com.clicktour.clicktour.domain.planner.dto;
 
 import com.clicktour.clicktour.domain.planner.Planner;
-import com.clicktour.clicktour.domain.planner.PlannerMap;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
-public class PlannerResponseDto {
+public class PlannerDetailResponseDto {
 
     private String title;
     private String intro;
@@ -19,7 +18,7 @@ public class PlannerResponseDto {
     private Date end_date;
     private List<PlannerMapResponseDto> plannerMapList;
 
-    public PlannerResponseDto(Planner planner) {
+    public PlannerDetailResponseDto(Planner planner) {
         this.title = planner.getTitle();
         this.intro = planner.getIntro();
         this.start_date = planner.getStart_date();
