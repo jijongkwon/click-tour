@@ -1,6 +1,7 @@
 package com.clicktour.clicktour.service.planner;
 
 import com.clicktour.clicktour.domain.planner.Planner;
+import com.clicktour.clicktour.domain.planner.PlannerMap;
 import com.clicktour.clicktour.domain.planner.dto.PlannerMapSaveRequestDto;
 import com.clicktour.clicktour.domain.planner.dto.PlannerResponseDto;
 import com.clicktour.clicktour.domain.planner.dto.PlannerSaveRequestDto;
@@ -20,18 +21,17 @@ public class PlannerService {
     public int save(PlannerSaveRequestDto plannerSaveRequestDto) {
 
         // planner 저장
-        Planner planner = plannerRepository.save(plannerSaveRequestDto.toEntity());
-        if (planner == null) {
+        Planner planner =plannerRepository. save(plannerSaveRequestDto.toEntity());
+        if (planner.getId() == null) {
             return 0;
         }
 
         // planner map 저장
-        PlannerMapSaveRequestDto plannerMapSaveRequestDto = new PlannerMapSaveRequestDto(
-                plannerSaveRequestDto.getPlannerMapList(), planner
-        );
-
-        if (plannerMapRepository.save(plannerMapSaveRequestDto.toEntity()).getId() == null) {
-            return 0;
+        for(PlannerMap plannerMap : plannerSaveRequestDto.getPlannerMapList()){
+            PlannerMapSaveRequestDto plannerMapSaveRequestDto = new PlannerMapSaveRequestDto(plannerMap, planner);
+            if (plannerMapRepository.save(plannerMapSaveRequestDto.toEntity()).getId() == null) {
+                return 0;
+            }
         }
 
         return 1;

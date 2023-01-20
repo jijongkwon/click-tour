@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Getter
 @NoArgsConstructor
 public class PlannerMapSaveRequestDto {
@@ -18,14 +16,12 @@ public class PlannerMapSaveRequestDto {
     private Planner planner;
 
     @Builder
-    public PlannerMapSaveRequestDto(List<PlannerMap> plannerMapList, Planner planner) {
-        for (PlannerMap plannerMap : plannerMapList) {
-            this.name = plannerMap.getName();
-            this.memo = plannerMap.getMemo();
-            this.x = plannerMap.getX();
-            this.y = plannerMap.getY();
-            this.planner = planner;
-        }
+    public PlannerMapSaveRequestDto(PlannerMap plannerMap, Planner planner) {
+        this.name = plannerMap.getName();
+        this.memo = plannerMap.getMemo();
+        this.x = plannerMap.getX();
+        this.y = plannerMap.getY();
+        this.planner = planner;
     }
 
     public PlannerMap toEntity() {
