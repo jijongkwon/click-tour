@@ -1,5 +1,6 @@
 package com.clicktour.clicktour.controller;
 
+import com.clicktour.clicktour.domain.planner.Planner;
 import com.clicktour.clicktour.domain.planner.dto.PlannerResponseDto;
 import com.clicktour.clicktour.domain.planner.dto.PlannerDetailResponseDto;
 import com.clicktour.clicktour.domain.planner.dto.PlannerSaveRequestDto;
@@ -46,11 +47,17 @@ public class PlannerApiController {
     }
 
     @PutMapping("api/v1/planner/update/{id}")
-    private ResponseEntity<PlannerUpdateRequestDto> update(@PathVariable Long id,
+    public ResponseEntity<PlannerUpdateRequestDto> update(@PathVariable Long id,
                                                            @RequestBody PlannerUpdateRequestDto requestDto){
 
         plannerService.update(id, requestDto);
 
         return new ResponseEntity<PlannerUpdateRequestDto>(requestDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("api/v1/planner/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        plannerService.delete(id);
+        return new ResponseEntity<>("delete", HttpStatus.OK);
     }
 }
