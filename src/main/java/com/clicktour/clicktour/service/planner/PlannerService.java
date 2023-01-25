@@ -76,4 +76,11 @@ public class PlannerService {
 
         return requestDto;
     }
+
+    @Transactional
+    public void delete(Long id){
+        Planner planner = plannerRepository.findById(id).orElseThrow(() -> new
+                IllegalArgumentException("해당 플래너가 존재하지 않습니다. id : " + id));
+        plannerRepository.delete(planner);
+    }
 }
