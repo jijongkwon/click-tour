@@ -3,6 +3,7 @@ package com.clicktour.clicktour.controller;
 import com.clicktour.clicktour.domain.planner.dto.PlannerResponseDto;
 import com.clicktour.clicktour.domain.planner.dto.PlannerDetailResponseDto;
 import com.clicktour.clicktour.domain.planner.dto.PlannerSaveRequestDto;
+import com.clicktour.clicktour.domain.planner.dto.PlannerUpdateRequestDto;
 import com.clicktour.clicktour.service.planner.PlannerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,5 +43,14 @@ public class PlannerApiController {
         }
 
         return new ResponseEntity<List<PlannerResponseDto>>(plannerResponseDtoList, HttpStatus.OK);
+    }
+
+    @PutMapping("api/v1/planner/update/{id}")
+    private ResponseEntity<PlannerUpdateRequestDto> update(@PathVariable Long id,
+                                                           @RequestBody PlannerUpdateRequestDto requestDto){
+
+        plannerService.update(id, requestDto);
+
+        return new ResponseEntity<PlannerUpdateRequestDto>(requestDto, HttpStatus.OK);
     }
 }
