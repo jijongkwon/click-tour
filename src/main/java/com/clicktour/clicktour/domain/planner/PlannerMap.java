@@ -47,4 +47,12 @@ public class PlannerMap {
         this.y = y;
         this.planner = planner;
     }
+
+    public void update(String name, String memo, Date date, Float x, Float y){
+        this.name = name;
+        this.memo = memo;
+        this.date = date;
+        this.x = x;
+        this.y = y;
+    }
 }
