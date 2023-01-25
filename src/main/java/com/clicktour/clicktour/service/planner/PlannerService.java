@@ -2,10 +2,7 @@ package com.clicktour.clicktour.service.planner;
 
 import com.clicktour.clicktour.domain.planner.Planner;
 import com.clicktour.clicktour.domain.planner.PlannerMap;
-import com.clicktour.clicktour.domain.planner.dto.PlannerResponseDto;
-import com.clicktour.clicktour.domain.planner.dto.PlannerMapSaveRequestDto;
-import com.clicktour.clicktour.domain.planner.dto.PlannerDetailResponseDto;
-import com.clicktour.clicktour.domain.planner.dto.PlannerSaveRequestDto;
+import com.clicktour.clicktour.domain.planner.dto.*;
 import com.clicktour.clicktour.repository.PlannerMapRepository;
 import com.clicktour.clicktour.repository.PlannerRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +50,30 @@ public class PlannerService {
         return plannerRepository.findAllDesc().
                 stream().map(PlannerResponseDto::new).
                 collect(Collectors.toList());
+    }
+
+    @Transactional
+    public PlannerUpdateRequestDto update(Long id, PlannerUpdateRequestDto requestDto){
+
+        // 플래너 수정
+        Planner planner = plannerRepository.findById(id).orElseThrow(() -> new
+                IllegalArgumentException("해당 플래너가 존재하지 않습니다. id : " + id));
+        planner.update(requestDto.getTitle(),requestDto.getStart_date(), requestDto.getEnd_date(),
+                requestDto.getIntro());
+
+        // 플랜 수정
+        int plannerMapIndex = 0;
+
+        for(PlannerMap plannerMap : requestDto.getPlannerMapList()){
+            PlannerMap updatePlan = plannerMapRepository.findById(planner.getPlannerMapList().get(plannerMapIndex).getId()).
+                    orElseThrow(() -> new IllegalArgumentException("해당 플래너가 존재하지 않습니다. id : " + id));
+
+            updatePlan.update(plannerMap.getName(), plannerMap.getMemo(),
+                    plannerMap.getDate(), plannerMap.getX(), plannerMap.getX());
+
+            plannerMapIndex++;
+        }
+
+        return requestDto;
     }
 }
