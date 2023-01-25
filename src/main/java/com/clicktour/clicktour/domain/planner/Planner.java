@@ -52,4 +52,12 @@ public class Planner {
         this.users = users;
         this.plannerMapList = plannerMapList;
     }
+
+    public void update(String title, Date start_date, Date end_date, String intro){
+        this.title = title;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.intro = intro;
+        this.plannerMapList = plannerMapList;
+    }
 }
