@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class PlannerUpdateRequestDto {
 
+    private Long id;
     private String title;
     private String intro;
     private Date start_date;
@@ -19,8 +20,9 @@ public class PlannerUpdateRequestDto {
     private List<PlannerMap> plannerMapList;
 
     @Builder
-    public PlannerUpdateRequestDto(String title, String intro, Date start_date, Date end_date,
+    public PlannerUpdateRequestDto(Long id, String title, String intro, Date start_date, Date end_date,
                                  List<PlannerMap> plannerMapList) {
+        this.id = id;
         this.title = title;
         this.intro = intro;
         this.start_date = start_date;

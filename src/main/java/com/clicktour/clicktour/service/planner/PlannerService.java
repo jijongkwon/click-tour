@@ -62,16 +62,12 @@ public class PlannerService {
                 requestDto.getIntro());
 
         // 플랜 수정
-        int plannerMapIndex = 0;
-
         for(PlannerMap plannerMap : requestDto.getPlannerMapList()){
-            PlannerMap updatePlan = plannerMapRepository.findById(planner.getPlannerMapList().get(plannerMapIndex).getId()).
-                    orElseThrow(() -> new IllegalArgumentException("해당 플래너가 존재하지 않습니다. id : " + id));
+            PlannerMap updatePlan = plannerMapRepository.findById(plannerMap.getId()).
+                    orElseThrow(() -> new IllegalArgumentException("해당 플랜이 존재하지 않습니다."));
 
             updatePlan.update(plannerMap.getName(), plannerMap.getMemo(),
-                    plannerMap.getDate(), plannerMap.getX(), plannerMap.getX());
-
-            plannerMapIndex++;
+                    plannerMap.getDate(), plannerMap.getX(), plannerMap.getY());
         }
 
         return requestDto;

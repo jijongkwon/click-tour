@@ -9,6 +9,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 public class PlannerMapResponseDto {
+    private Long id;
     private String name;
     private String memo;
     private Date date;
@@ -16,6 +17,7 @@ public class PlannerMapResponseDto {
     private Float y;
 
     public PlannerMapResponseDto(PlannerMap plannerMap){
+        this.id = plannerMap.getId();
         this.name = plannerMap.getName();
         this.memo = plannerMap.getMemo();
         this.x = plannerMap.getX();
