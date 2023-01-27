@@ -40,17 +40,17 @@ public class Planner {
 
     @OneToMany(mappedBy = "planner", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @OrderBy("id asc")
-    private List<PlannerMap> plannerMapList;
+    private List<Plan> planList;
 
     @Builder
     public Planner(String title, Date start_date, Date end_date, String intro, Users users,
-                   List<PlannerMap> plannerMapList) {
+                   List<Plan> planList) {
         this.title = title;
         this.start_date = start_date;
         this.end_date = end_date;
         this.intro = intro;
         this.users = users;
-        this.plannerMapList = plannerMapList;
+        this.planList = planList;
     }
 
     public void update(String title, Date start_date, Date end_date, String intro){
@@ -58,6 +58,6 @@ public class Planner {
         this.start_date = start_date;
         this.end_date = end_date;
         this.intro = intro;
-        this.plannerMapList = plannerMapList;
+        this.planList = planList;
     }
 }

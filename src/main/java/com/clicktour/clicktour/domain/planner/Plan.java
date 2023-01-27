@@ -11,8 +11,8 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @Getter
-@Table(name = "planner_map")
-public class PlannerMap {
+@Table(name = "plan")
+public class Plan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +39,7 @@ public class PlannerMap {
     private Float y;
 
     @Builder
-    public PlannerMap(String name, String memo, Date date, Float x, Float y, Planner planner) {
+    public Plan(String name, String memo, Date date, Float x, Float y, Planner planner) {
         this.name = name;
         this.memo = memo;
         this.date = date;

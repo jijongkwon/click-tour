@@ -16,13 +16,13 @@ public class PlannerDetailResponseDto {
     private String intro;
     private Date start_date;
     private Date end_date;
-    private List<PlannerMapResponseDto> plannerMapList;
+    private List<PlanResponseDto> planList;
 
     public PlannerDetailResponseDto(Planner planner) {
         this.title = planner.getTitle();
         this.intro = planner.getIntro();
         this.start_date = planner.getStart_date();
         this.end_date = planner.getEnd_date();
-        this.plannerMapList = planner.getPlannerMapList().stream().map(PlannerMapResponseDto::new).collect(Collectors.toList());
+        this.planList = planner.getPlanList().stream().map(PlanResponseDto::new).collect(Collectors.toList());
     }
 }

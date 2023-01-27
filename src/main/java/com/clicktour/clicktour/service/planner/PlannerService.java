@@ -1,9 +1,9 @@
 package com.clicktour.clicktour.service.planner;
 
 import com.clicktour.clicktour.domain.planner.Planner;
-import com.clicktour.clicktour.domain.planner.PlannerMap;
+import com.clicktour.clicktour.domain.planner.Plan;
 import com.clicktour.clicktour.domain.planner.dto.*;
-import com.clicktour.clicktour.repository.PlannerMapRepository;
+import com.clicktour.clicktour.repository.PlanRepository;
 import com.clicktour.clicktour.repository.PlannerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Service
 public class PlannerService {
     private final PlannerRepository plannerRepository;
-    private final PlannerMapRepository plannerMapRepository;
+    private final PlanRepository planRepository;
 
     @Transactional
     public PlannerSaveRequestDto save(PlannerSaveRequestDto plannerSaveRequestDto) {
@@ -27,10 +27,10 @@ public class PlannerService {
             return null;
         }
 
-        // planner map 저장
-        for(PlannerMap plannerMap : plannerSaveRequestDto.getPlannerMapList()){
-            PlannerMapSaveRequestDto plannerMapSaveRequestDto = new PlannerMapSaveRequestDto(plannerMap, planner);
-            if (plannerMapRepository.save(plannerMapSaveRequestDto.toEntity()).getId() == null) {
+        // plan 저장
+        for(Plan plan : plannerSaveRequestDto.getPlanList()){
+            PlanSaveRequestDto planSaveRequestDto = new PlanSaveRequestDto(plan, planner);
+            if (planRepository.save(planSaveRequestDto.toEntity()).getId() == null) {
                 return null;
             }
         }
@@ -62,12 +62,12 @@ public class PlannerService {
                 requestDto.getIntro());
 
         // 플랜 수정
-        for(PlannerMap plannerMap : requestDto.getPlannerMapList()){
-            PlannerMap updatePlan = plannerMapRepository.findById(plannerMap.getId()).
+        for(Plan plan : requestDto.getPlanList()){
+            Plan updatePlan = planRepository.findById(plan.getId()).
                     orElseThrow(() -> new IllegalArgumentException("해당 플랜이 존재하지 않습니다."));
 
-            updatePlan.update(plannerMap.getName(), plannerMap.getMemo(),
-                    plannerMap.getDate(), plannerMap.getX(), plannerMap.getY());
+            updatePlan.update(plan.getName(), plan.getMemo(),
+                    plan.getDate(), plan.getX(), plan.getY());
         }
 
         return requestDto;
