@@ -18,7 +18,7 @@ import java.util.List;
 public class PlannerApiController {
     private final PlannerService plannerService;
 
-    @PostMapping("/api/v1/planner")
+    @PostMapping("/api/v1/planner/post")
     public ResponseEntity<PlannerSaveRequestDto> save(@RequestBody PlannerSaveRequestDto requestDto) {
         PlannerSaveRequestDto plannerSaveRequestDto = plannerService.save(requestDto);
         if (plannerSaveRequestDto == null) {
@@ -27,7 +27,7 @@ public class PlannerApiController {
         return new ResponseEntity<PlannerSaveRequestDto>(plannerSaveRequestDto, HttpStatus.OK);
     }
 
-    @GetMapping("/planner/{id}")
+    @GetMapping("api/v1/planner/{id}")
     public ResponseEntity<PlannerDetailResponseDto> readDetail(@PathVariable Long id) {
         PlannerDetailResponseDto plannerResponseDto = plannerService.findById(id);
         if(plannerResponseDto == null){
@@ -36,7 +36,7 @@ public class PlannerApiController {
         return new ResponseEntity<PlannerDetailResponseDto>(plannerResponseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/planner")
+    @GetMapping("api/v1/planner")
     public ResponseEntity<List<PlannerResponseDto>> readList(){
         List<PlannerResponseDto> plannerResponseDtoList = plannerService.findAllDesc();
         if(plannerResponseDtoList ==  null){
