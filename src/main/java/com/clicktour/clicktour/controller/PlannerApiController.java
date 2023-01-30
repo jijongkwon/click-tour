@@ -1,6 +1,5 @@
 package com.clicktour.clicktour.controller;
 
-import com.clicktour.clicktour.domain.planner.Planner;
 import com.clicktour.clicktour.domain.planner.dto.PlannerResponseDto;
 import com.clicktour.clicktour.domain.planner.dto.PlannerDetailResponseDto;
 import com.clicktour.clicktour.domain.planner.dto.PlannerSaveRequestDto;
