@@ -9,12 +9,14 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 public class PlannerResponseDto {
+    private Long id;
     private String title;
     private String intro;
     private Date start_date;
     private Date end_date;
 
     public PlannerResponseDto(Planner planner) {
+        this.id = planner.getId();
         this.title = planner.getTitle();
         this.intro = planner.getIntro();
         this.start_date = planner.getStart_date();
