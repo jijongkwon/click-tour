@@ -1,7 +1,7 @@
 package com.clicktour.clicktour.service.planner;
 
-import com.clicktour.clicktour.domain.planner.Planner;
 import com.clicktour.clicktour.domain.planner.Plan;
+import com.clicktour.clicktour.domain.planner.Planner;
 import com.clicktour.clicktour.domain.planner.dto.*;
 import com.clicktour.clicktour.repository.PlanRepository;
 import com.clicktour.clicktour.repository.PlannerRepository;
@@ -19,16 +19,16 @@ public class PlannerService {
     private final PlanRepository planRepository;
 
     @Transactional
-    public PlannerSaveRequestDto save(PlannerSaveRequestDto plannerSaveRequestDto) {
+    public PlannerSaveRequestDto savePlanner(PlannerSaveRequestDto plannerSaveRequestDto) {
 
         // planner 저장
-        Planner planner =plannerRepository.save(plannerSaveRequestDto.toEntity());
+        Planner planner = plannerRepository.save(plannerSaveRequestDto.toEntity());
         if (planner.getId() == null) {
             return null;
         }
 
         // plan 저장
-        for(Plan plan : plannerSaveRequestDto.getPlanList()){
+        for (Plan plan : plannerSaveRequestDto.getPlanList()) {
             PlanSaveRequestDto planSaveRequestDto = new PlanSaveRequestDto(plan, planner);
             if (planRepository.save(planSaveRequestDto.toEntity()).getId() == null) {
                 return null;
@@ -46,37 +46,77 @@ public class PlannerService {
     }
 
     @Transactional
-    public List<PlannerResponseDto> findAllDesc(){
+    public List<PlannerResponseDto> findAllDesc() {
         return plannerRepository.findAllDesc().
                 stream().map(PlannerResponseDto::new).
                 collect(Collectors.toList());
     }
 
     @Transactional
-    public PlannerUpdateRequestDto update(Long id, PlannerUpdateRequestDto requestDto){
+    public PlannerUpdateRequestDto updatePlanner(Long id, PlannerUpdateRequestDto requestDto) {
 
-        // 플래너 수정
+        /* 플래너 수정 */
         Planner planner = plannerRepository.findById(id).orElseThrow(() -> new
                 IllegalArgumentException("해당 플래너가 존재하지 않습니다. id : " + id));
-        planner.update(requestDto.getTitle(),requestDto.getStart_date(), requestDto.getEnd_date(),
+        planner.update(requestDto.getTitle(), requestDto.getStart_date(), requestDto.getEnd_date(),
                 requestDto.getIntro());
 
-        // 플랜 수정
+        /* 플랜 수정 */
         for(Plan plan : requestDto.getPlanList()){
-            Plan updatePlan = planRepository.findById(plan.getId()).
-                    orElseThrow(() -> new IllegalArgumentException("해당 플랜이 존재하지 않습니다."));
+            System.out.println(plan.getId());
+            // 플랜 추가가 있을 시
+            if(plan.getId() == null){
+                PlanSaveRequestDto planSaveRequestDto = new PlanSaveRequestDto(plan, planner);
+                planRepository.save(planSaveRequestDto.toEntity());
+            }
+            if(plan.getId() != null){
+                updatePlan(plan);
+            }
+        }
 
-            updatePlan.update(plan.getName(), plan.getMemo(),
-                    plan.getDate(), plan.getX(), plan.getY());
+        /* 플랜 삭제 */
+        for(Plan plan : planner.getPlanList()){
+            System.out.println(isIdInPlanner(plan, requestDto));
+            if(!isIdInPlanner(plan, requestDto)){
+                planDelete(plan.getId());
+            }
         }
 
         return requestDto;
     }
 
     @Transactional
-    public void delete(Long id){
+    public void updatePlan(Plan plan) {
+        Plan updatePlan = planRepository.findById(plan.getId()).
+                    orElseThrow(() -> new IllegalArgumentException("해당 플랜이 존재하지 않습니다."));
+
+            updatePlan.update(plan.getName(), plan.getMemo(),
+                    plan.getDate(), plan.getX(), plan.getY());
+    }
+
+    @Transactional
+    public void plannerDelete(Long id) {
         Planner planner = plannerRepository.findById(id).orElseThrow(() -> new
                 IllegalArgumentException("해당 플래너가 존재하지 않습니다. id : " + id));
         plannerRepository.delete(planner);
+    }
+
+    @Transactional
+    public void planDelete(Long id){
+        Plan plan = planRepository.findById(id).orElseThrow(() -> new
+                IllegalArgumentException("해당 플랜이 존재하지 않습니다. id : " + id));
+        planRepository.delete(plan);
+    }
+
+    public boolean isIdInPlanner(Plan plan, PlannerUpdateRequestDto requestDto) {
+        for(Plan planRequestDto : requestDto.getPlanList()){
+            if(planRequestDto.getId() == null){
+                continue;
+            }
+            if(planRequestDto.getId().equals(plan.getId())){
+                return true;
+            }
+        }
+        return false;
     }
 }
