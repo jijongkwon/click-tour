@@ -19,7 +19,7 @@ public class PlannerApiController {
 
     @PostMapping("/api/v1/planner/post")
     public ResponseEntity<PlannerSaveRequestDto> save(@RequestBody PlannerSaveRequestDto requestDto) {
-        PlannerSaveRequestDto plannerSaveRequestDto = plannerService.save(requestDto);
+        PlannerSaveRequestDto plannerSaveRequestDto = plannerService.savePlanner(requestDto);
         if (plannerSaveRequestDto == null) {
             return ResponseEntity.notFound().build();
         }
@@ -49,14 +49,14 @@ public class PlannerApiController {
     public ResponseEntity<PlannerUpdateRequestDto> update(@PathVariable Long id,
                                                            @RequestBody PlannerUpdateRequestDto requestDto){
 
-        plannerService.update(id, requestDto);
+        plannerService.updatePlanner(id, requestDto);
 
         return new ResponseEntity<PlannerUpdateRequestDto>(requestDto, HttpStatus.OK);
     }
 
     @DeleteMapping("api/v1/planner/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id){
-        plannerService.delete(id);
+        plannerService.plannerDelete(id);
         return new ResponseEntity<>("delete", HttpStatus.OK);
     }
 }
