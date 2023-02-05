@@ -63,7 +63,6 @@ public class PlannerService {
 
         /* 플랜 수정 */
         for(Plan plan : requestDto.getPlanList()){
-            System.out.println(plan.getId());
             // 플랜 추가가 있을 시
             if(plan.getId() == null){
                 PlanSaveRequestDto planSaveRequestDto = new PlanSaveRequestDto(plan, planner);
@@ -76,7 +75,6 @@ public class PlannerService {
 
         /* 플랜 삭제 */
         for(Plan plan : planner.getPlanList()){
-            System.out.println(isIdInPlanner(plan, requestDto));
             if(!isIdInPlanner(plan, requestDto)){
                 planDelete(plan.getId());
             }
