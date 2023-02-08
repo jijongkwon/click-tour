@@ -1,5 +1,6 @@
 package com.clicktour.clicktour.domain.planner;
 
+import com.clicktour.clicktour.domain.BaseTimeEntity;
 import com.clicktour.clicktour.domain.users.Users;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "planner")
-public class Planner {
+public class Planner extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
