@@ -1,5 +1,6 @@
 package com.clicktour.clicktour.domain.users;
 
+import com.clicktour.clicktour.domain.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,17 +10,20 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Table(name = "users")
-public class Users {
+public class Users extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String id_login;
+    @Column(nullable = false, unique = true)
+    private String login_id;
 
     @Column(nullable = false)
-    private String password_login;
+    private String login_password;
+
+    @Column(nullable = false, unique = true)
+    private String email;
 
     @Column(nullable = false)
     private String name;
