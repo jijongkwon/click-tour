@@ -1,6 +1,8 @@
 package com.clicktour.clicktour.domain.users;
 
 import com.clicktour.clicktour.domain.BaseTimeEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +10,8 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Table(name = "users")
 public class Users extends BaseTimeEntity {
