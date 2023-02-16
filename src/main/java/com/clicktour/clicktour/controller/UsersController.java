@@ -28,13 +28,13 @@ public class UsersController {
     public Long register(@RequestBody Map<String, String> user) {
         return usersRepository.save(Users.builder()
                 .email(user.get("email"))
-                .login_password(passwordEncoder.encode(user.get("login_password")))
-                .nick_name(user.get("nick_name"))
+                .loginPassword(passwordEncoder.encode(user.get("loginPassword")))
+                .nickname(user.get("nickname"))
                 .intro(user.get("intro"))
                 .Gender(user.get("gender"))
                 .picture(user.get("picture"))
                 .age(Integer.parseInt(user.get("age")))
-                .login_id(user.get("login_id"))
+                .loginId(user.get("loginId"))
                 .address(user.get("address"))
                 .name(user.get("name"))
                 .role(Role.USER)
@@ -44,14 +44,14 @@ public class UsersController {
     // 로그인
     @PostMapping("/login")
     public String login(@RequestBody Map<String, String> user) {
-        Users users = usersRepository.findByEmail(user.get("email"))
+        Users users = usersRepository.findByLoginId(user.get("loginId"))
                 .orElseThrow(() -> new IllegalArgumentException("가입 되지 않은 이메일입니다."));
-        System.out.println(user.get("login_password"));
-        System.out.println(users.getLogin_password());
-        if (!passwordEncoder.matches(user.get("login_password"), users.getLogin_password())) {
+        System.out.println(user.get("loginPassword"));
+        System.out.println(users.getLoginPassword());
+        if (!passwordEncoder.matches(user.get("loginPassword"), users.getLoginPassword())) {
             throw new IllegalArgumentException("이메일 또는 비밀번호가 맞지 않습니다.");
         }
 
-        return jwtTokenProvider.createToken(users.getEmail(), users.getRole());
+        return jwtTokenProvider.createToken(users.getLoginId(), users.getRole());
     }
 }
