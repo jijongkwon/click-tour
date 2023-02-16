@@ -39,16 +39,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .httpBasic().disable() // rest api만을 고려
                 .csrf().disable()
                 .headers().frameOptions().disable()
                 .and()
-                .httpBasic().disable() // rest api만을 고려
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 안함
                 .and()
                 .authorizeRequests() //url 별 권환 관리 // andMatchers : 권환 관리 대상 지정
-                .antMatchers("/", "/api/v1/users/**", "/h2-console/**").permitAll()
-                .antMatchers("/api/v1/crew/head/**").hasRole(Role.CREW_HEAD.name())
-                .anyRequest().authenticated()
+                .antMatchers("/api/v1/planner/**").hasAuthority(Role.USER.name())
+                .antMatchers("/api/v1/crew/head/**").hasAuthority(Role.CREW_HEAD.name())
+                .anyRequest().permitAll()
 
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
