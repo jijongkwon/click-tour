@@ -21,10 +21,10 @@ public class Users extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String login_id;
+    private String loginId;
 
     @Column(nullable = false)
-    private String login_password;
+    private String loginPassword;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -33,7 +33,7 @@ public class Users extends BaseTimeEntity {
     private String name;
 
     @Column(nullable = false, unique = true)
-    private String nick_name;
+    private String nickname;
 
     @Column(nullable = false)
     private int age;
