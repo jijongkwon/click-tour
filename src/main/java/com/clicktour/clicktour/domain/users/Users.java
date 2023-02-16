@@ -39,7 +39,7 @@ public class Users extends BaseTimeEntity {
     private int age;
 
     @Column(nullable = false)
-    private String Gender;
+    private String gender;
 
     @Column
     private String address;
