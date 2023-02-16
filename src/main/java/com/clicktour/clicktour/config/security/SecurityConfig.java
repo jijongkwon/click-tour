@@ -1,4 +1,4 @@
-package com.clicktour.clicktour.config.auth.security;
+package com.clicktour.clicktour.config.security;
 
 import com.clicktour.clicktour.config.security.JwtAuthenticationFilter;
 import com.clicktour.clicktour.config.security.JwtTokenProvider;
