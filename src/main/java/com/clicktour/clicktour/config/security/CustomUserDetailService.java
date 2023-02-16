@@ -1,11 +1,14 @@
 package com.clicktour.clicktour.config.security;
 
+import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -15,7 +18,13 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return (UserDetails) usersRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        Optional<Users> optional = usersRepository.findByLoginId(username);
+        if(!optional.isPresent()) {
+            throw new UsernameNotFoundException(username + " 사용자 없음");
+        } else {
+            Users users = optional.get();
+            return new SecurityUser(users);
+        }
+
     }
 }
