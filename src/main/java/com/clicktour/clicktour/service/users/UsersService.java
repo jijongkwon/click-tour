@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,15 @@ public class UsersService {
 
     @Transactional
     public UserJoinRequestDto register(UserJoinRequestDto userJoinRequestDto){
+        Optional<Users> usersId = usersRepository.findByLoginId(userJoinRequestDto.getLoginId());
+        Optional<Users> usersNickname = usersRepository.findByNickname(userJoinRequestDto.getNickname());
+
+        // id, nickname 중복
+        if(usersId.isPresent() || usersNickname.isPresent()){
+            return null;
+        }
+
+        // 회원가입
         userJoinRequestDto.setLoginPassword(passwordEncoder.encode(userJoinRequestDto.getLoginPassword()));
         usersRepository.save(userJoinRequestDto.toEntity());
         return userJoinRequestDto;
