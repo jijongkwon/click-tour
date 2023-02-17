@@ -3,6 +3,7 @@ package com.clicktour.clicktour.controller;
 import com.clicktour.clicktour.config.security.JwtTokenProvider;
 import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.domain.users.dto.UserJoinRequestDto;
+import com.clicktour.clicktour.domain.users.dto.UserLoginRequestDto;
 import com.clicktour.clicktour.repository.UsersRepository;
 import com.clicktour.clicktour.service.users.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -33,14 +34,8 @@ public class UsersApiController {
 
     // 로그인
     @PostMapping("/login")
-    public String login(@RequestBody Map<String, String> user) {
-        Users users = usersRepository.findByLoginId(user.get("loginId"))
-                .orElseThrow(() -> new IllegalArgumentException("가입 되지 않은 아이디입니다."));
-        if (!passwordEncoder.matches(user.get("loginPassword"), users.getLoginPassword())) {
-            throw new IllegalArgumentException("이메일 또는 비밀번호가 맞지 않습니다.");
-        }
-
-        return jwtTokenProvider.createToken(users.getLoginId(), users.getRole());
+    public String login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
+        return usersService.login(userLoginRequestDto);
     }
 }
 
