@@ -2,17 +2,16 @@ package com.clicktour.clicktour.controller;
 
 import com.clicktour.clicktour.config.dto.JwtTokenResponseDto;
 import com.clicktour.clicktour.config.dto.MessageResponseDto;
+import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
 import com.clicktour.clicktour.domain.users.dto.UserJoinRequestDto;
 import com.clicktour.clicktour.domain.users.dto.UserLoginRequestDto;
 import com.clicktour.clicktour.service.users.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
@@ -53,6 +52,19 @@ public class UsersApiController {
         }
 
         return new ResponseEntity<>(jwtTokenResponseDto,HttpStatus.OK);
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<?> userInfo(HttpServletRequest httpServletRequest){
+        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
+        UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(jwtToken);
+
+        if(userInfoResponseDto == null){
+            MessageResponseDto messageResponseDto = new MessageResponseDto(403,"notFound");
+            return new ResponseEntity<>(messageResponseDto,HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(userInfoResponseDto, HttpStatus.OK);
     }
 }
 

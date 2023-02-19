@@ -2,6 +2,7 @@ package com.clicktour.clicktour.service.users;
 
 import com.clicktour.clicktour.config.security.JwtTokenProvider;
 import com.clicktour.clicktour.domain.users.Users;
+import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
 import com.clicktour.clicktour.domain.users.dto.UserJoinRequestDto;
 import com.clicktour.clicktour.domain.users.dto.UserLoginRequestDto;
 import com.clicktour.clicktour.repository.UsersRepository;
@@ -39,7 +40,7 @@ public class UsersService {
     @Transactional
     public String login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
         Optional<Users> users = usersRepository.findByLoginId(userLoginRequestDto.getLoginId());
-        if(!users.isPresent()){
+        if(users.isEmpty()){
             return "notFoundId";
         }
         if (!passwordEncoder.matches(userLoginRequestDto.getLoginPassword(), users.get().getLoginPassword())) {
@@ -47,6 +48,20 @@ public class UsersService {
         }
 
         return jwtTokenProvider.createToken(users.get().getLoginId(), users.get().getRole());
+    }
+
+    @Transactional
+    public UserInfoResponseDto getUserInfo(String jwtToken) {
+        Optional<Users> users;
+
+        try {
+            users = usersRepository.findByLoginId(jwtTokenProvider.getUserPK(jwtToken));
+        }
+        catch (Exception e) {
+            return null;
+        }
+
+        return users.map(UserInfoResponseDto::new).orElse(null);
     }
 }
 
