@@ -59,6 +59,5 @@ public class Planner extends BaseTimeEntity {
         this.start_date = start_date;
         this.end_date = end_date;
         this.intro = intro;
-        this.planList = planList;
     }
 }
