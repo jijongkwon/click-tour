@@ -40,13 +40,15 @@ public class UsersService {
 
     @Transactional
     public String login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
-        Users users = usersRepository.findByLoginId(userLoginRequestDto.getLoginId())
-                .orElseThrow(() -> new IllegalArgumentException("가입 되지 않은 아이디입니다."));
-        if (!passwordEncoder.matches(userLoginRequestDto.getLoginPassword(), users.getLoginPassword())) {
-            throw new IllegalArgumentException("이메일 또는 비밀번호가 맞지 않습니다.");
+        Optional<Users> users = usersRepository.findByLoginId(userLoginRequestDto.getLoginId());
+        if(!users.isPresent()){
+            return "notFoundId";
+        }
+        if (!passwordEncoder.matches(userLoginRequestDto.getLoginPassword(), users.get().getLoginPassword())) {
+            return "mismatchPassword";
         }
 
-        return jwtTokenProvider.createToken(users.getLoginId(), users.getRole());
+        return jwtTokenProvider.createToken(users.get().getLoginId(), users.get().getRole());
     }
 }
 
