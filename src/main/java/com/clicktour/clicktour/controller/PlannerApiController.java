@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class PlannerApiController {
         if (plannerSaveRequestDto == null) {
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<PlannerSaveRequestDto>(plannerSaveRequestDto, HttpStatus.OK);
+        return new ResponseEntity<PlannerSaveRequestDto>(requestDto, HttpStatus.OK);
     }
 
     @GetMapping("/planner/{id}")
@@ -37,8 +38,9 @@ public class PlannerApiController {
     }
 
     @GetMapping("/planner")
-    public ResponseEntity<List<PlannerResponseDto>> readList(){
-        List<PlannerResponseDto> plannerResponseDtoList = plannerService.findAllDesc();
+    public ResponseEntity<List<PlannerResponseDto>> readList(HttpServletRequest httpServletRequest){
+        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
+        List<PlannerResponseDto> plannerResponseDtoList = plannerService.findPlannerList(jwtToken);
         if(plannerResponseDtoList ==  null){
             return ResponseEntity.notFound().build();
         }
