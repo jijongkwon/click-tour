@@ -3,23 +3,35 @@ package com.clicktour.clicktour.service.planner;
 import com.clicktour.clicktour.domain.planner.Plan;
 import com.clicktour.clicktour.domain.planner.Planner;
 import com.clicktour.clicktour.domain.planner.dto.*;
+import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.repository.PlanRepository;
 import com.clicktour.clicktour.repository.PlannerRepository;
+import com.clicktour.clicktour.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class PlannerService {
     private final PlannerRepository plannerRepository;
+    private final UsersRepository usersRepository;
     private final PlanRepository planRepository;
 
     @Transactional
     public PlannerSaveRequestDto savePlanner(PlannerSaveRequestDto plannerSaveRequestDto) {
+
+        Optional<Users> users = usersRepository.findByNickname(plannerSaveRequestDto.getNickname());
+
+        if(users.isEmpty()){
+            return null;
+        }
+
+        plannerSaveRequestDto.setUsers(users.get());
 
         // planner 저장
         Planner planner = plannerRepository.save(plannerSaveRequestDto.toEntity());
