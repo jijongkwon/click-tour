@@ -4,9 +4,11 @@ import com.clicktour.clicktour.domain.planner.Plan;
 import com.clicktour.clicktour.domain.planner.Planner;
 import com.clicktour.clicktour.domain.planner.dto.*;
 import com.clicktour.clicktour.domain.users.Users;
+import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
 import com.clicktour.clicktour.repository.PlanRepository;
 import com.clicktour.clicktour.repository.PlannerRepository;
 import com.clicktour.clicktour.repository.UsersRepository;
+import com.clicktour.clicktour.service.users.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ public class PlannerService {
     private final PlannerRepository plannerRepository;
     private final UsersRepository usersRepository;
     private final PlanRepository planRepository;
+    private final UsersService usersService;
 
     @Transactional
     public PlannerSaveRequestDto savePlanner(PlannerSaveRequestDto plannerSaveRequestDto) {
@@ -60,6 +63,14 @@ public class PlannerService {
     @Transactional
     public List<PlannerResponseDto> findAllDesc() {
         return plannerRepository.findAllDesc().
+                stream().map(PlannerResponseDto::new).
+                collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<PlannerResponseDto> findPlannerList(String jwtToken){
+        UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(jwtToken);
+        return plannerRepository.findByUsersId(userInfoResponseDto.getId()).
                 stream().map(PlannerResponseDto::new).
                 collect(Collectors.toList());
     }
