@@ -25,9 +25,10 @@ public class UsersService {
     public UserJoinRequestDto register(UserJoinRequestDto userJoinRequestDto){
         Optional<Users> usersId = usersRepository.findByLoginId(userJoinRequestDto.getLoginId());
         Optional<Users> usersNickname = usersRepository.findByNickname(userJoinRequestDto.getNickname());
+        Optional<Users> usersEmail = usersRepository.findByEmail(userJoinRequestDto.getEmail());
 
-        // id, nickname 중복
-        if(usersId.isPresent() || usersNickname.isPresent()){
+        // id, nickname, email 중복
+        if(usersId.isPresent() || usersNickname.isPresent() || usersEmail.isPresent()){
             return null;
         }
 

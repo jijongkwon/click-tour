@@ -27,7 +27,7 @@ public class UsersApiController {
 
         // 중복된 아이디 또는 닉네임이 있을 때
         if(usersService.register(userJoinRequestDto) == null){
-            MessageResponseDto messageResponseDto = new MessageResponseDto(400, "duplicateIdOrNickname");
+            MessageResponseDto messageResponseDto = new MessageResponseDto(400, "duplicateIdOrNicknameOrEmail");
             return new ResponseEntity<>(messageResponseDto,HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(userJoinRequestDto, HttpStatus.OK);
