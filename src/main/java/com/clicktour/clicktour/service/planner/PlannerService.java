@@ -1,10 +1,12 @@
 package com.clicktour.clicktour.service.planner;
 
+import com.clicktour.clicktour.domain.planner.Place;
 import com.clicktour.clicktour.domain.planner.Plan;
 import com.clicktour.clicktour.domain.planner.Planner;
 import com.clicktour.clicktour.domain.planner.dto.*;
 import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
+import com.clicktour.clicktour.repository.PlaceRepository;
 import com.clicktour.clicktour.repository.PlanRepository;
 import com.clicktour.clicktour.repository.PlannerRepository;
 import com.clicktour.clicktour.repository.UsersRepository;
@@ -23,6 +25,7 @@ public class PlannerService {
     private final PlannerRepository plannerRepository;
     private final UsersRepository usersRepository;
     private final PlanRepository planRepository;
+    private final PlaceRepository placeRepository;
     private final UsersService usersService;
 
     @Transactional
@@ -46,6 +49,14 @@ public class PlannerService {
         for (Plan plan : plannerSaveRequestDto.getPlanList()) {
             PlanSaveRequestDto planSaveRequestDto = new PlanSaveRequestDto(plan, planner);
             if (planRepository.save(planSaveRequestDto.toEntity()).getId() == null) {
+                return null;
+            }
+        }
+
+        // place 저장
+        for (Place place : plannerSaveRequestDto.getPlaceList()){
+            PlaceSaveRequestDto placeSaveRequestDto = new PlaceSaveRequestDto(place, planner);
+            if(placeRepository.save(placeSaveRequestDto.toEntity()).getId() == null){
                 return null;
             }
         }
@@ -78,41 +89,52 @@ public class PlannerService {
     @Transactional
     public PlannerUpdateRequestDto updatePlanner(Long id, PlannerUpdateRequestDto requestDto) {
 
+        System.out.println(requestDto.getConcept());
         /* 플래너 수정 */
         Planner planner = plannerRepository.findById(id).orElseThrow(() -> new
                 IllegalArgumentException("해당 플래너가 존재하지 않습니다. id : " + id));
         planner.update(requestDto.getTitle(), requestDto.getStart_date(), requestDto.getEnd_date(),
-                requestDto.getIntro());
+                requestDto.getIntro(), requestDto.getConcept());
 
         /* 플랜 수정 */
-        for(Plan plan : requestDto.getPlanList()){
-            // 플랜 추가가 있을 시
-            if(plan.getId() == null){
-                PlanSaveRequestDto planSaveRequestDto = new PlanSaveRequestDto(plan, planner);
-                planRepository.save(planSaveRequestDto.toEntity());
-            }
-            if(plan.getId() != null){
-                updatePlan(plan);
-            }
-        }
+        updatePlan(requestDto, planner);
 
         /* 플랜 삭제 */
-        for(Plan plan : planner.getPlanList()){
-            if(!isIdInPlanner(plan, requestDto)){
-                planDelete(plan.getId());
-            }
-        }
+        planDelete(requestDto, planner);
+
+        /* 플레이스 삭제 */
+        placeDelete(planner);
+
+        /* 플레이스 수정 */
+        updatePlace(requestDto, planner);
+
 
         return requestDto;
     }
 
     @Transactional
-    public void updatePlan(Plan plan) {
-        Plan updatePlan = planRepository.findById(plan.getId()).
-                    orElseThrow(() -> new IllegalArgumentException("해당 플랜이 존재하지 않습니다."));
+    public void updatePlan(PlannerUpdateRequestDto requestDto, Planner planner) {
+        for(Plan plan : requestDto.getPlanList()){
+            PlanSaveRequestDto planSaveRequestDto = new PlanSaveRequestDto(plan, planner);
+            planRepository.save(planSaveRequestDto.toEntity());
+        }
+    }
 
-            updatePlan.update(plan.getName(), plan.getMemo(),
-                    plan.getDate(), plan.getX(), plan.getY());
+    @Transactional
+    public void updatePlace(PlannerUpdateRequestDto requestDto, Planner planner){
+        for(Place place : requestDto.getPlaceList()){
+           // 플레이스 추가가 있을 시
+            if(place.getId() == null){
+                PlaceSaveRequestDto placeSaveRequestDto = new PlaceSaveRequestDto(place, planner);
+                placeRepository.save(placeSaveRequestDto.toEntity());
+            }
+            if(place.getId() != null){
+                Place updatePlace = placeRepository.findById(place.getId()).
+                        orElseThrow(() -> new IllegalArgumentException("해당 플레이스가 존재하지 않습니다."));
+
+                updatePlace.update(place.getPlace());
+            }
+        }
     }
 
     @Transactional
@@ -123,10 +145,23 @@ public class PlannerService {
     }
 
     @Transactional
-    public void planDelete(Long id){
-        Plan plan = planRepository.findById(id).orElseThrow(() -> new
-                IllegalArgumentException("해당 플랜이 존재하지 않습니다. id : " + id));
-        planRepository.delete(plan);
+    public void placeDelete(Planner planner) {
+        for(Place place : planner.getPlaceList()){
+            Place deletePlace = placeRepository.findById(place.getId()).orElseThrow(() -> new
+                    IllegalArgumentException("해당 플랜이 플레이스가 않습니다. id : " + place.getId()));
+            placeRepository.delete(deletePlace);
+        }
+    }
+
+    @Transactional
+    public void planDelete(PlannerUpdateRequestDto requestDto, Planner planner){
+        for(Plan plan : planner.getPlanList()){
+            if(!isIdInPlanner(plan, requestDto)){
+                Plan deletePlan = planRepository.findById(plan.getId()).orElseThrow(() -> new
+                        IllegalArgumentException("해당 플랜이 존재하지 않습니다. id : " + plan.getId()));
+                planRepository.delete(deletePlan);
+            }
+        }
     }
 
     public boolean isIdInPlanner(Plan plan, PlannerUpdateRequestDto requestDto) {
