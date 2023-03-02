@@ -1,5 +1,6 @@
 package com.clicktour.clicktour.domain.planner.dto;
 
+import com.clicktour.clicktour.domain.planner.Place;
 import com.clicktour.clicktour.domain.planner.Plan;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,16 +18,20 @@ public class PlannerUpdateRequestDto {
     private String intro;
     private Date start_date;
     private Date end_date;
+    private String concept;
     private List<Plan> planList;
+    private List<Place> placeList;
 
     @Builder
-    public PlannerUpdateRequestDto(Long id, String title, String intro, Date start_date, Date end_date,
-                                 List<Plan> planList) {
+    public PlannerUpdateRequestDto(Long id, String title, String intro, Date start_date, Date end_date, String concept,
+                                 List<Plan> planList, List<Place> placeList) {
         this.id = id;
         this.title = title;
         this.intro = intro;
         this.start_date = start_date;
         this.end_date = end_date;
+        this.concept = concept;
         this.planList = planList;
+        this.placeList = placeList;
     }
 }

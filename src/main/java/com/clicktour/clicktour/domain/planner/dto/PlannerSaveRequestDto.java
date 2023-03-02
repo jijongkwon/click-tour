@@ -1,5 +1,6 @@
 package com.clicktour.clicktour.domain.planner.dto;
 
+import com.clicktour.clicktour.domain.planner.Place;
 import com.clicktour.clicktour.domain.planner.Planner;
 import com.clicktour.clicktour.domain.planner.Plan;
 import com.clicktour.clicktour.domain.users.Users;
@@ -18,18 +19,22 @@ public class PlannerSaveRequestDto {
     private String intro;
     private Date start_date;
     private Date end_date;
-    private List<Plan> planList;
     private String nickname;
+    private String concept;
+    private List<Place> placeList;
+    private List<Plan> planList;
     private Users users;
 
     @Builder
-    public PlannerSaveRequestDto(String title, String intro, Date start_date, Date end_date,
-                                 List<Plan> planList, Users users) {
+    public PlannerSaveRequestDto(String title, String intro, Date start_date, Date end_date, String concept,
+                                 List<Plan> planList, List<Place> placeList, Users users) {
         this.title = title;
         this.intro = intro;
         this.start_date = start_date;
         this.end_date = end_date;
+        this.concept = concept;
         this.planList = planList;
+        this.placeList = placeList;
         this.users = users;
     }
 
@@ -39,6 +44,7 @@ public class PlannerSaveRequestDto {
                 intro(intro).
                 start_date(start_date).
                 end_date(end_date).
+                concept(concept).
                 users(users).
                 build();
     }
