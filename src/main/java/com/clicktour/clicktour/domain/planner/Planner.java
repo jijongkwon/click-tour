@@ -35,6 +35,9 @@ public class Planner extends BaseTimeEntity {
     @Column
     private String intro;
 
+    @Column
+    private String concept;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users users;
@@ -43,21 +46,29 @@ public class Planner extends BaseTimeEntity {
     @OrderBy("id asc")
     private List<Plan> planList;
 
+    @OneToMany(mappedBy = "planner", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OrderBy("id asc")
+    private List<Place> placeList;
+
     @Builder
-    public Planner(String title, Date start_date, Date end_date, String intro, Users users,
-                   List<Plan> planList) {
+    public Planner(String title, Date start_date, Date end_date, String intro, String concept, Users users,
+                   List<Plan> planList, List<Place> placeList) {
         this.title = title;
         this.start_date = start_date;
         this.end_date = end_date;
         this.intro = intro;
+        this.concept = concept;
         this.users = users;
         this.planList = planList;
+        this.placeList = placeList;
     }
 
-    public void update(String title, Date start_date, Date end_date, String intro){
+    public void update(String title, Date start_date, Date end_date, String intro,
+                       String concept){
         this.title = title;
         this.start_date = start_date;
         this.end_date = end_date;
         this.intro = intro;
+        this.concept = concept;
     }
 }
