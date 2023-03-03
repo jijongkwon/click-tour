@@ -89,7 +89,6 @@ public class PlannerService {
     @Transactional
     public PlannerUpdateRequestDto updatePlanner(Long id, PlannerUpdateRequestDto requestDto) {
 
-        System.out.println(requestDto.getConcept());
         /* 플래너 수정 */
         Planner planner = plannerRepository.findById(id).orElseThrow(() -> new
                 IllegalArgumentException("해당 플래너가 존재하지 않습니다. id : " + id));
@@ -115,25 +114,24 @@ public class PlannerService {
     @Transactional
     public void updatePlan(PlannerUpdateRequestDto requestDto, Planner planner) {
         for(Plan plan : requestDto.getPlanList()){
-            PlanSaveRequestDto planSaveRequestDto = new PlanSaveRequestDto(plan, planner);
-            planRepository.save(planSaveRequestDto.toEntity());
+            if(plan.getId() == null){
+                PlanSaveRequestDto planSaveRequestDto = new PlanSaveRequestDto(plan, planner);
+                planRepository.save(planSaveRequestDto.toEntity());
+            }
+            if(plan.getId() != null){
+                Plan updatePlan = planRepository.findById(plan.getId()).
+                        orElseThrow(() -> new IllegalArgumentException("해당 플랜이 존재하지 않습니다."));
+
+                updatePlan.update(plan.getName(),plan.getMemo(),plan.getDate(),plan.getX(),plan.getY());
+            }
         }
     }
 
     @Transactional
     public void updatePlace(PlannerUpdateRequestDto requestDto, Planner planner){
         for(Place place : requestDto.getPlaceList()){
-           // 플레이스 추가가 있을 시
-            if(place.getId() == null){
-                PlaceSaveRequestDto placeSaveRequestDto = new PlaceSaveRequestDto(place, planner);
-                placeRepository.save(placeSaveRequestDto.toEntity());
-            }
-            if(place.getId() != null){
-                Place updatePlace = placeRepository.findById(place.getId()).
-                        orElseThrow(() -> new IllegalArgumentException("해당 플레이스가 존재하지 않습니다."));
-
-                updatePlace.update(place.getPlace());
-            }
+            PlaceSaveRequestDto placeSaveRequestDto = new PlaceSaveRequestDto(place, planner);
+            placeRepository.save(placeSaveRequestDto.toEntity());
         }
     }
 
@@ -175,4 +173,20 @@ public class PlannerService {
         }
         return false;
     }
+
+//    @Transactional
+//    public Planner recommendPlanner(PlannerRecommendRequestDto recommendRequestDto){
+//        List<Planner> planners =  plannerRepository.findAllDesc();
+//
+//        // 완벽일치
+//        for(Planner planner : planners){
+//            if(planner.getPlaceList() == recommendRequestDto.getPlaceList()
+//            && planner.getConcept() == recommendRequestDto.getConcept()
+//            && planner.getStart_date() == recommendRequestDto.getStartDate()
+//            && planner.getEnd_date() == recommendRequestDto.getEndDate()){
+//
+//            }
+//        }
+//
+//    }
 }
