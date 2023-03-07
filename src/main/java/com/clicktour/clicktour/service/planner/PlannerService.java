@@ -4,6 +4,7 @@ import com.clicktour.clicktour.domain.planner.Place;
 import com.clicktour.clicktour.domain.planner.Plan;
 import com.clicktour.clicktour.domain.planner.Planner;
 import com.clicktour.clicktour.domain.planner.dto.*;
+import com.clicktour.clicktour.domain.users.Role;
 import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
 import com.clicktour.clicktour.repository.PlaceRepository;
@@ -15,8 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -162,6 +163,36 @@ public class PlannerService {
         }
     }
 
+    @Transactional
+    public PlannerDetailResponseDto recommendPlanner(PlannerRecommendRequestDto recommendRequestDto){
+        List<Planner> allPlanners =  plannerRepository.findAllDesc();
+        // 추천 목록 추가
+        List<Planner> recommendPlannerList = addRecommendPlannerList(allPlanners,recommendRequestDto);
+        
+        // 랜덤 번호 생성
+        int randomIndex = creatRandomNumber(recommendPlannerList);
+
+        return new PlannerDetailResponseDto(recommendPlannerList.get(randomIndex));
+    }
+
+    public List<Planner> addRecommendPlannerList(List<Planner> allPlanners, PlannerRecommendRequestDto recommendRequestDto){
+        List<Planner> recommendPlannerList = new ArrayList<>();
+
+        for(Planner planner : allPlanners) {
+            if (isMeetRequirementForRecommendPlanner(planner, recommendRequestDto)) {
+                for (Place requestPlace : recommendRequestDto.getPlaceList()) {
+                    for(Place responsePlace : planner.getPlaceList()){
+                        if(requestPlace.getPlace().equals(requestPlace.getPlace())){
+                            recommendPlannerList.add(planner);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return recommendPlannerList;
+    }
+
     public boolean isIdInPlanner(Plan plan, PlannerUpdateRequestDto requestDto) {
         for(Plan planRequestDto : requestDto.getPlanList()){
             if(planRequestDto.getId() == null){
@@ -174,19 +205,49 @@ public class PlannerService {
         return false;
     }
 
-//    @Transactional
-//    public Planner recommendPlanner(PlannerRecommendRequestDto recommendRequestDto){
-//        List<Planner> planners =  plannerRepository.findAllDesc();
-//
-//        // 완벽일치
-//        for(Planner planner : planners){
-//            if(planner.getPlaceList() == recommendRequestDto.getPlaceList()
-//            && planner.getConcept() == recommendRequestDto.getConcept()
-//            && planner.getStart_date() == recommendRequestDto.getStartDate()
-//            && planner.getEnd_date() == recommendRequestDto.getEndDate()){
-//
-//            }
+    public boolean isEqualStartDate(Planner planner, PlannerRecommendRequestDto recommendRequestDto){
+        return planner.getStart_date().toString().equals(transportDateFormat(recommendRequestDto.getStartDate()));
+    }
+
+    public boolean isEqualEndDate(Planner planner, PlannerRecommendRequestDto recommendRequestDto){
+        return planner.getEnd_date().toString().equals(transportDateFormat(recommendRequestDto.getEndDate()));
+    }
+
+    public boolean isEqualConcept(Planner planner, PlannerRecommendRequestDto recommendRequestDto){
+        return planner.getConcept().equals(recommendRequestDto.getConcept());
+    }
+
+    public boolean isAdmin(Planner planner){
+        return planner.getUsers().getRole().equals(Role.ADMIN);
+    }
+
+    public boolean isMeetRequirementForRecommendPlanner(Planner planner, PlannerRecommendRequestDto recommendRequestDto){
+        if(!isEqualStartDate(planner,recommendRequestDto)){
+            return false;
+        }
+
+        if(!isEqualEndDate(planner,recommendRequestDto)){
+            return false;
+        }
+
+        if(!isEqualConcept(planner,recommendRequestDto)){
+            return false;
+        }
+
+//        if(!isAdmin(planner)){
+//            return false;
 //        }
-//
-//    }
+
+        return true;
+    }
+
+    public int creatRandomNumber(List<Planner> recommendPlannerList){
+        Random random = new Random();
+        return random.nextInt(recommendPlannerList.size()) + 1;
+    }
+
+    public String transportDateFormat(Date date){
+        SimpleDateFormat transportDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
+        return transportDate.format(date);
+    }
 }
