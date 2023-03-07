@@ -8,8 +8,10 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum SuccessMessage {
 
-    SUCCESS_POST(200,"success post"),
-    SUCCESS_UPDATE(200, "success update");
+    SUCCESS_POST_PLANNER(200,"success post planner"),
+    SUCCESS_UPDATE_PLANNER(200, "success update planner"),
+    SUCCESS_REGISTER(200, "success register"),
+    SUCCESS_RECOMMEND(200,"success recommend");
 
     private final int code;
     private final String message;

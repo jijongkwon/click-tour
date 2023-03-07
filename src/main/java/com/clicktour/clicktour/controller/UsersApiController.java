@@ -32,7 +32,7 @@ public class UsersApiController {
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.DUPLICATE_ID_OR_NICKNAME_OR_EMAIL),
                     HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_REGISTER), HttpStatus.OK);
     }
 
     // 로그인

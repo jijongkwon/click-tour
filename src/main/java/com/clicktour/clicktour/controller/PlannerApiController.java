@@ -26,7 +26,7 @@ public class PlannerApiController {
         if (plannerSaveRequestDto == null) {
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST_PLANNER), HttpStatus.OK);
     }
 
     @GetMapping("/planner/{id}")
@@ -54,7 +54,7 @@ public class PlannerApiController {
 
         plannerService.updatePlanner(id, requestDto);
 
-        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_UPDATE), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_UPDATE_PLANNER), HttpStatus.OK);
     }
 
     @DeleteMapping("/planner/delete/{id}")
@@ -69,6 +69,6 @@ public class PlannerApiController {
         if(plannerResponseDto == null){
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_PLANNER), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_RECOMMEND), HttpStatus.OK);
     }
 }
