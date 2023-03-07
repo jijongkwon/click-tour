@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 안함
                 .and()
                 .authorizeRequests() //url 별 권환 관리 // andMatchers : 권환 관리 대상 지정
-                .antMatchers("/api/v1/planner/**").authenticated()
+                .antMatchers("/api/v1/planner/**","/api/v1/board/**").authenticated()
                 .antMatchers("/api/v1/crew/head/**").hasAuthority(Role.CREW_HEAD.name())
                 .anyRequest().permitAll()
 
