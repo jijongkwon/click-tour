@@ -168,7 +168,7 @@ public class PlannerService {
         List<Planner> allPlanners =  plannerRepository.findAllDesc();
         // 추천 목록 추가
         List<Planner> recommendPlannerList = addRecommendPlannerList(allPlanners,recommendRequestDto);
-        
+
         // 랜덤 번호 생성
         int randomIndex = creatRandomNumber(recommendPlannerList);
 
@@ -182,7 +182,7 @@ public class PlannerService {
             if (isMeetRequirementForRecommendPlanner(planner, recommendRequestDto)) {
                 for (Place requestPlace : recommendRequestDto.getPlaceList()) {
                     for(Place responsePlace : planner.getPlaceList()){
-                        if(requestPlace.getPlace().equals(requestPlace.getPlace())){
+                        if(requestPlace.getPlace().equals(responsePlace.getPlace())){
                             recommendPlannerList.add(planner);
                             break;
                         }
