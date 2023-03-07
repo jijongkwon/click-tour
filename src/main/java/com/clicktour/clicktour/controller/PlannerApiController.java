@@ -1,9 +1,7 @@
 package com.clicktour.clicktour.controller;
 
-import com.clicktour.clicktour.domain.planner.dto.PlannerResponseDto;
-import com.clicktour.clicktour.domain.planner.dto.PlannerDetailResponseDto;
-import com.clicktour.clicktour.domain.planner.dto.PlannerSaveRequestDto;
-import com.clicktour.clicktour.domain.planner.dto.PlannerUpdateRequestDto;
+import com.clicktour.clicktour.config.dto.MessageResponseDto;
+import com.clicktour.clicktour.domain.planner.dto.*;
 import com.clicktour.clicktour.service.planner.PlannerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -61,5 +59,15 @@ public class PlannerApiController {
     public ResponseEntity<String> delete(@PathVariable Long id){
         plannerService.plannerDelete(id);
         return new ResponseEntity<>("delete", HttpStatus.OK);
+    }
+
+    @PostMapping("planner/recommend")
+    public ResponseEntity<?> recommendPlanner(@RequestBody PlannerRecommendRequestDto recommendRequestDto){
+        PlannerDetailResponseDto plannerResponseDto = plannerService.recommendPlanner(recommendRequestDto);
+        if(plannerResponseDto == null){
+            MessageResponseDto messageResponseDto = new MessageResponseDto(403, "notFoundPlanner");
+            return new ResponseEntity<>(messageResponseDto, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<PlannerDetailResponseDto>(plannerResponseDto, HttpStatus.OK);
     }
 }
