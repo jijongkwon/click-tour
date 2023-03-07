@@ -80,9 +80,18 @@ public class PlannerService {
     }
 
     @Transactional
-    public List<PlannerResponseDto> findPlannerList(String jwtToken){
+    public List<PlannerResponseDto> findIndividualPlannerList(String jwtToken){
         UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(jwtToken);
         return plannerRepository.findByUsersId(userInfoResponseDto.getId()).
+                stream().map(PlannerResponseDto::new).
+                collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<PlannerResponseDto> findVisiblePlannerList(String jwtToken){
+        UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(jwtToken);
+
+        return plannerRepository.findByUsersIdWithVisibility(userInfoResponseDto.getId()).
                 stream().map(PlannerResponseDto::new).
                 collect(Collectors.toList());
     }
