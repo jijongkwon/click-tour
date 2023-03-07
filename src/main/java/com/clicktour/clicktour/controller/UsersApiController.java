@@ -1,7 +1,7 @@
 package com.clicktour.clicktour.controller;
 
 import com.clicktour.clicktour.config.dto.JwtTokenResponseDto;
-import com.clicktour.clicktour.config.dto.MessageResponseDto;
+import com.clicktour.clicktour.common.message.dto.MessageResponseDto;
 import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
 import com.clicktour.clicktour.domain.users.dto.UserJoinRequestDto;
 import com.clicktour.clicktour.domain.users.dto.UserLoginRequestDto;
@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor

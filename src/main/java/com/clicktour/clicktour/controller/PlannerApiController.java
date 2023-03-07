@@ -1,6 +1,6 @@
 package com.clicktour.clicktour.controller;
 
-import com.clicktour.clicktour.config.dto.MessageResponseDto;
+import com.clicktour.clicktour.common.message.dto.MessageResponseDto;
 import com.clicktour.clicktour.domain.planner.dto.*;
 import com.clicktour.clicktour.service.planner.PlannerService;
 import lombok.RequiredArgsConstructor;
