@@ -1,6 +1,6 @@
 package com.clicktour.clicktour.controller;
 
-import com.clicktour.clicktour.common.message.ErrorMessage;
+import com.clicktour.clicktour.common.message.enums.ErrorMessage;
 import com.clicktour.clicktour.common.message.dto.ExceptionDto;
 import com.clicktour.clicktour.domain.planner.dto.*;
 import com.clicktour.clicktour.service.planner.PlannerService;

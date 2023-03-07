@@ -1,6 +1,6 @@
 package com.clicktour.clicktour.controller;
 
-import com.clicktour.clicktour.common.message.ErrorMessage;
+import com.clicktour.clicktour.common.message.enums.ErrorMessage;
 import com.clicktour.clicktour.config.dto.JwtTokenResponseDto;
 import com.clicktour.clicktour.common.message.dto.ExceptionDto;
 import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;

@@ -1,9 +1,8 @@
 package com.clicktour.clicktour.common.message.dto;
 
-import com.clicktour.clicktour.common.message.SuccessMessage;
+import com.clicktour.clicktour.common.message.enums.SuccessMessage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 @NoArgsConstructor

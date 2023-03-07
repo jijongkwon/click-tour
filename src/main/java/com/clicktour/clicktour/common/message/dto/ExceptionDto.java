@@ -1,6 +1,6 @@
 package com.clicktour.clicktour.common.message.dto;
 
-import com.clicktour.clicktour.common.message.ErrorMessage;
+import com.clicktour.clicktour.common.message.enums.ErrorMessage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

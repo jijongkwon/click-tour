@@ -1,4 +1,4 @@
-package com.clicktour.clicktour.common.message;
+package com.clicktour.clicktour.common.message.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

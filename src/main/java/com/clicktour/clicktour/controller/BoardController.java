@@ -1,6 +1,6 @@
 package com.clicktour.clicktour.controller;
 
-import com.clicktour.clicktour.common.message.SuccessMessage;
+import com.clicktour.clicktour.common.message.enums.SuccessMessage;
 import com.clicktour.clicktour.common.message.dto.ResponseDto;
 import com.clicktour.clicktour.domain.board.Board;
 import com.clicktour.clicktour.domain.board.dto.BoardSaveRequestDto;
