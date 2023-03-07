@@ -1,6 +1,7 @@
 package com.clicktour.clicktour.controller;
 
-import com.clicktour.clicktour.common.message.dto.MessageResponseDto;
+import com.clicktour.clicktour.common.message.ErrorMessage;
+import com.clicktour.clicktour.common.message.dto.ExceptionDto;
 import com.clicktour.clicktour.domain.planner.dto.*;
 import com.clicktour.clicktour.service.planner.PlannerService;
 import lombok.RequiredArgsConstructor;
@@ -65,8 +66,7 @@ public class PlannerApiController {
     public ResponseEntity<?> recommendPlanner(@RequestBody PlannerRecommendRequestDto recommendRequestDto){
         PlannerDetailResponseDto plannerResponseDto = plannerService.recommendPlanner(recommendRequestDto);
         if(plannerResponseDto == null){
-            MessageResponseDto messageResponseDto = new MessageResponseDto(403, "notFoundPlanner");
-            return new ResponseEntity<>(messageResponseDto, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_PLANNER), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<PlannerDetailResponseDto>(plannerResponseDto, HttpStatus.OK);
     }

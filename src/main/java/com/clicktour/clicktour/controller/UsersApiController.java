@@ -1,7 +1,8 @@
 package com.clicktour.clicktour.controller;
 
+import com.clicktour.clicktour.common.message.ErrorMessage;
 import com.clicktour.clicktour.config.dto.JwtTokenResponseDto;
-import com.clicktour.clicktour.common.message.dto.MessageResponseDto;
+import com.clicktour.clicktour.common.message.dto.ExceptionDto;
 import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
 import com.clicktour.clicktour.domain.users.dto.UserJoinRequestDto;
 import com.clicktour.clicktour.domain.users.dto.UserLoginRequestDto;
@@ -26,8 +27,8 @@ public class UsersApiController {
 
         // 중복된 아이디 또는 닉네임이 있을 때
         if(usersService.register(userJoinRequestDto) == null){
-            MessageResponseDto messageResponseDto = new MessageResponseDto(400, "duplicateIdOrNicknameOrEmail");
-            return new ResponseEntity<>(messageResponseDto,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.DUPLICATE_ID_OR_NICKNAME_OR_EMAIL),
+                    HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(userJoinRequestDto, HttpStatus.OK);
     }
@@ -36,18 +37,16 @@ public class UsersApiController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
         JwtTokenResponseDto jwtTokenResponseDto = new JwtTokenResponseDto(usersService.login(userLoginRequestDto));
-        MessageResponseDto messageResponseDto;
+        ExceptionDto messageResponseDto;
 
         // Id가 존재하지 않을 때
         if(jwtTokenResponseDto.getJwtToken().equals("notFoundId")){
-            messageResponseDto = new MessageResponseDto(403, "notFoundId");
-            return new ResponseEntity<>(messageResponseDto, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_ID), HttpStatus.NOT_FOUND);
         }
 
         // 비밀번호가 틀릴 때
         if(jwtTokenResponseDto.getJwtToken().equals("mismatchPassword")){
-            messageResponseDto = new MessageResponseDto(400,"mismatchPassword");
-            return new ResponseEntity<>(messageResponseDto, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.MISMATCH_PASSWORD), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(jwtTokenResponseDto,HttpStatus.OK);
@@ -59,8 +58,7 @@ public class UsersApiController {
         UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(jwtToken);
 
         if(userInfoResponseDto == null){
-            MessageResponseDto messageResponseDto = new MessageResponseDto(403,"notFound");
-            return new ResponseEntity<>(messageResponseDto,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_ID),HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(userInfoResponseDto, HttpStatus.OK);
