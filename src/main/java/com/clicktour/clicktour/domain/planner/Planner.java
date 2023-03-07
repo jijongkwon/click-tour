@@ -38,6 +38,9 @@ public class Planner extends BaseTimeEntity {
     @Column
     private String concept;
 
+    @Column(nullable = false)
+    private String visibility;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users users;
@@ -51,24 +54,26 @@ public class Planner extends BaseTimeEntity {
     private List<Place> placeList;
 
     @Builder
-    public Planner(String title, Date start_date, Date end_date, String intro, String concept, Users users,
-                   List<Plan> planList, List<Place> placeList) {
+    public Planner(String title, Date start_date, Date end_date, String intro, String concept, String visibility,
+                   Users users, List<Plan> planList, List<Place> placeList) {
         this.title = title;
         this.start_date = start_date;
         this.end_date = end_date;
         this.intro = intro;
         this.concept = concept;
+        this.visibility = visibility;
         this.users = users;
         this.planList = planList;
         this.placeList = placeList;
     }
 
     public void update(String title, Date start_date, Date end_date, String intro,
-                       String concept){
+                       String concept, String visibility){
         this.title = title;
         this.start_date = start_date;
         this.end_date = end_date;
         this.intro = intro;
         this.concept = concept;
+        this.visibility = visibility;
     }
 }

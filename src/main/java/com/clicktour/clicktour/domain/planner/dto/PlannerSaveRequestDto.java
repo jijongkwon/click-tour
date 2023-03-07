@@ -21,18 +21,20 @@ public class PlannerSaveRequestDto {
     private Date end_date;
     private String nickname;
     private String concept;
+    private String visibility;
     private List<Place> placeList;
     private List<Plan> planList;
     private Users users;
 
     @Builder
     public PlannerSaveRequestDto(String title, String intro, Date start_date, Date end_date, String concept,
-                                 List<Plan> planList, List<Place> placeList, Users users) {
+                                 String visibility, List<Plan> planList, List<Place> placeList, Users users) {
         this.title = title;
         this.intro = intro;
         this.start_date = start_date;
         this.end_date = end_date;
         this.concept = concept;
+        this.visibility = visibility;
         this.planList = planList;
         this.placeList = placeList;
         this.users = users;
@@ -45,6 +47,7 @@ public class PlannerSaveRequestDto {
                 start_date(start_date).
                 end_date(end_date).
                 concept(concept).
+                visibility(visibility).
                 users(users).
                 build();
     }

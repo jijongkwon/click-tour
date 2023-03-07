@@ -94,7 +94,7 @@ public class PlannerService {
         Planner planner = plannerRepository.findById(id).orElseThrow(() -> new
                 IllegalArgumentException("해당 플래너가 존재하지 않습니다. id : " + id));
         planner.update(requestDto.getTitle(), requestDto.getStart_date(), requestDto.getEnd_date(),
-                requestDto.getIntro(), requestDto.getConcept());
+                requestDto.getIntro(), requestDto.getConcept(), requestDto.getVisibility());
 
         /* 플랜 수정 */
         updatePlan(requestDto, planner);

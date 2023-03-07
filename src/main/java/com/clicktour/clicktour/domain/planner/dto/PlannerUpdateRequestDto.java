@@ -19,18 +19,20 @@ public class PlannerUpdateRequestDto {
     private Date start_date;
     private Date end_date;
     private String concept;
+    private String visibility;
     private List<Plan> planList;
     private List<Place> placeList;
 
     @Builder
     public PlannerUpdateRequestDto(Long id, String title, String intro, Date start_date, Date end_date, String concept,
-                                 List<Plan> planList, List<Place> placeList) {
+                                 String visibility, List<Plan> planList, List<Place> placeList) {
         this.id = id;
         this.title = title;
         this.intro = intro;
         this.start_date = start_date;
         this.end_date = end_date;
         this.concept = concept;
+        this.visibility = visibility;
         this.planList = planList;
         this.placeList = placeList;
     }
