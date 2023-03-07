@@ -14,5 +14,5 @@ public interface PlannerRepository extends JpaRepository<Planner, Long> {
     @Query("SELECT p FROM Planner p ORDER BY p.id DESC")
     List<Planner> findAllDesc();
 
-    Optional<Planner> findByUsersId(Long userId);
+    List<Planner> findByUsersId(Long userId);
 }
