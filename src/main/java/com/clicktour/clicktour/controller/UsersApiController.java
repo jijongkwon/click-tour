@@ -1,6 +1,8 @@
 package com.clicktour.clicktour.controller;
 
+import com.clicktour.clicktour.common.message.dto.ResponseDto;
 import com.clicktour.clicktour.common.message.enums.ErrorMessage;
+import com.clicktour.clicktour.common.message.enums.SuccessMessage;
 import com.clicktour.clicktour.config.dto.JwtTokenResponseDto;
 import com.clicktour.clicktour.common.message.dto.ExceptionDto;
 import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
@@ -30,7 +32,7 @@ public class UsersApiController {
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.DUPLICATE_ID_OR_NICKNAME_OR_EMAIL),
                     HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(userJoinRequestDto, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST), HttpStatus.OK);
     }
 
     // 로그인

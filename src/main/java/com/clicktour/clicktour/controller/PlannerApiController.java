@@ -1,7 +1,9 @@
 package com.clicktour.clicktour.controller;
 
+import com.clicktour.clicktour.common.message.dto.ResponseDto;
 import com.clicktour.clicktour.common.message.enums.ErrorMessage;
 import com.clicktour.clicktour.common.message.dto.ExceptionDto;
+import com.clicktour.clicktour.common.message.enums.SuccessMessage;
 import com.clicktour.clicktour.domain.planner.dto.*;
 import com.clicktour.clicktour.service.planner.PlannerService;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +21,12 @@ public class PlannerApiController {
     private final PlannerService plannerService;
 
     @PostMapping("/planner/post")
-    public ResponseEntity<PlannerSaveRequestDto> save(@RequestBody PlannerSaveRequestDto requestDto) {
+    public ResponseEntity<?> save(@RequestBody PlannerSaveRequestDto requestDto) {
         PlannerSaveRequestDto plannerSaveRequestDto = plannerService.savePlanner(requestDto);
         if (plannerSaveRequestDto == null) {
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<PlannerSaveRequestDto>(requestDto, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST), HttpStatus.OK);
     }
 
     @GetMapping("/planner/{id}")
@@ -33,7 +35,7 @@ public class PlannerApiController {
         if(plannerResponseDto == null){
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<PlannerDetailResponseDto>(plannerResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(plannerResponseDto, HttpStatus.OK);
     }
 
     @GetMapping("/planner")
@@ -48,12 +50,11 @@ public class PlannerApiController {
     }
 
     @PutMapping("/planner/update/{id}")
-    public ResponseEntity<PlannerUpdateRequestDto> update(@PathVariable Long id,
-                                                           @RequestBody PlannerUpdateRequestDto requestDto){
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody PlannerUpdateRequestDto requestDto){
 
         plannerService.updatePlanner(id, requestDto);
 
-        return new ResponseEntity<PlannerUpdateRequestDto>(requestDto, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_UPDATE), HttpStatus.OK);
     }
 
     @DeleteMapping("/planner/delete/{id}")
@@ -68,6 +69,6 @@ public class PlannerApiController {
         if(plannerResponseDto == null){
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_PLANNER), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<PlannerDetailResponseDto>(plannerResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST), HttpStatus.OK);
     }
 }
