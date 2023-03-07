@@ -1,4 +1,4 @@
-package com.clicktour.clicktour.config.dto;
+package com.clicktour.clicktour.common.message.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
