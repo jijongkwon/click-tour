@@ -1,6 +1,9 @@
 package com.clicktour.clicktour.controller;
 
-import com.clicktour.clicktour.config.dto.MessageResponseDto;
+import com.clicktour.clicktour.common.message.dto.ResponseDto;
+import com.clicktour.clicktour.common.message.enums.ErrorMessage;
+import com.clicktour.clicktour.common.message.dto.ExceptionDto;
+import com.clicktour.clicktour.common.message.enums.SuccessMessage;
 import com.clicktour.clicktour.domain.planner.dto.*;
 import com.clicktour.clicktour.service.planner.PlannerService;
 import lombok.RequiredArgsConstructor;
@@ -13,29 +16,29 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/planner")
 public class PlannerApiController {
     private final PlannerService plannerService;
 
-    @PostMapping("/planner/post")
-    public ResponseEntity<PlannerSaveRequestDto> save(@RequestBody PlannerSaveRequestDto requestDto) {
+    @PostMapping("/post")
+    public ResponseEntity<?> save(@RequestBody PlannerSaveRequestDto requestDto) {
         PlannerSaveRequestDto plannerSaveRequestDto = plannerService.savePlanner(requestDto);
         if (plannerSaveRequestDto == null) {
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<PlannerSaveRequestDto>(requestDto, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST_PLANNER), HttpStatus.OK);
     }
 
-    @GetMapping("/planner/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<PlannerDetailResponseDto> readDetail(@PathVariable Long id) {
         PlannerDetailResponseDto plannerResponseDto = plannerService.findById(id);
         if(plannerResponseDto == null){
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<PlannerDetailResponseDto>(plannerResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(plannerResponseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/planner")
+    @GetMapping("/list")
     public ResponseEntity<List<PlannerResponseDto>> readList(HttpServletRequest httpServletRequest){
         String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
         List<PlannerResponseDto> plannerResponseDtoList = plannerService.findIndividualPlannerList(jwtToken);
@@ -46,29 +49,38 @@ public class PlannerApiController {
         return new ResponseEntity<List<PlannerResponseDto>>(plannerResponseDtoList, HttpStatus.OK);
     }
 
-    @PutMapping("/planner/update/{id}")
-    public ResponseEntity<PlannerUpdateRequestDto> update(@PathVariable Long id,
-                                                           @RequestBody PlannerUpdateRequestDto requestDto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody PlannerUpdateRequestDto requestDto){
 
         plannerService.updatePlanner(id, requestDto);
 
-        return new ResponseEntity<PlannerUpdateRequestDto>(requestDto, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_UPDATE_PLANNER), HttpStatus.OK);
     }
 
-    @DeleteMapping("/planner/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id){
         plannerService.plannerDelete(id);
         return new ResponseEntity<>("delete", HttpStatus.OK);
     }
 
-    @PostMapping("planner/recommend")
+    @PostMapping("/recommend")
     public ResponseEntity<?> recommendPlanner(@RequestBody PlannerRecommendRequestDto recommendRequestDto){
         PlannerDetailResponseDto plannerResponseDto = plannerService.recommendPlanner(recommendRequestDto);
         if(plannerResponseDto == null){
-            MessageResponseDto messageResponseDto = new MessageResponseDto(403, "notFoundPlanner");
-            return new ResponseEntity<>(messageResponseDto, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_PLANNER), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<PlannerDetailResponseDto>(plannerResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_RECOMMEND), HttpStatus.OK);
+    }
+
+    @GetMapping("/visible")
+    public ResponseEntity<List<PlannerResponseDto>> readVisiblePlannerList(HttpServletRequest httpServletRequest){
+        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
+        List<PlannerResponseDto> plannerResponseDtoList = plannerService.findVisiblePlannerList(jwtToken);
+        if(plannerResponseDtoList ==  null){
+            return ResponseEntity.notFound().build();
+        }
+
+        return new ResponseEntity<List<PlannerResponseDto>>(plannerResponseDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/planner/visible")
