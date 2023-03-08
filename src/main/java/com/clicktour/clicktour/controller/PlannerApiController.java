@@ -38,7 +38,7 @@ public class PlannerApiController {
         return new ResponseEntity<>(plannerResponseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/")
     public ResponseEntity<List<PlannerResponseDto>> readList(HttpServletRequest httpServletRequest){
         String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
         List<PlannerResponseDto> plannerResponseDtoList = plannerService.findIndividualPlannerList(jwtToken);
