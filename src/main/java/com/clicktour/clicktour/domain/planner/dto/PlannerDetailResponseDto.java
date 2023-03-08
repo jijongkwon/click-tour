@@ -15,6 +15,7 @@ public class PlannerDetailResponseDto {
     private String title;
     private String intro;
     private String concept;
+    private String nickname;
     private Date start_date;
     private Date end_date;
     private List<PlanResponseDto> planList;
@@ -26,6 +27,7 @@ public class PlannerDetailResponseDto {
         this.start_date = planner.getStart_date();
         this.end_date = planner.getEnd_date();
         this.concept = planner.getConcept();
+        this.nickname = planner.getUsers().getNickname();
         this.planList = planner.getPlanList().stream().map(PlanResponseDto::new).collect(Collectors.toList());
         this.placeList = planner.getPlaceList().stream().map(PlaceResponseDto::new).collect(Collectors.toList());
     }
