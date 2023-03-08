@@ -28,6 +28,6 @@ public class BoardController {
             return ResponseEntity.notFound().build();
         }
 
-        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST_BOARD), HttpStatus.OK);
     }
 }
