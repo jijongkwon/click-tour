@@ -60,7 +60,7 @@ public class UsersApiController {
         UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(jwtToken);
 
         if(userInfoResponseDto == null){
-            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_ID),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_USER),HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(userInfoResponseDto, HttpStatus.OK);
