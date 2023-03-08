@@ -179,7 +179,11 @@ public class PlannerService {
         List<Planner> recommendPlannerList = addRecommendPlannerList(allPlanners,recommendRequestDto);
 
         // 랜덤 번호 생성
-        int randomIndex = creatRandomNumber(recommendPlannerList);
+        int randomIndex = creatRandomNumber(recommendPlannerList) - 1;
+
+        if(randomIndex == -2){
+            return null;
+        }
 
         return new PlannerDetailResponseDto(recommendPlannerList.get(randomIndex));
     }
@@ -251,6 +255,9 @@ public class PlannerService {
     }
 
     public int creatRandomNumber(List<Planner> recommendPlannerList){
+        if(recommendPlannerList.size() == 0){
+            return -1;
+        }
         Random random = new Random();
         return random.nextInt(recommendPlannerList.size()) + 1;
     }
