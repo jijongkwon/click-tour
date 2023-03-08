@@ -58,9 +58,9 @@ public class PlannerApiController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id){
+    public ResponseEntity<?> delete(@PathVariable Long id){
         plannerService.plannerDelete(id);
-        return new ResponseEntity<>("delete", HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_DELETE_PLANNER), HttpStatus.OK);
     }
 
     @PostMapping("/recommend")
@@ -80,6 +80,6 @@ public class PlannerApiController {
             return ResponseEntity.notFound().build();
         }
 
-        return new ResponseEntity<List<PlannerResponseDto>>(plannerResponseDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(plannerResponseDtoList, HttpStatus.OK);
     }
 }
