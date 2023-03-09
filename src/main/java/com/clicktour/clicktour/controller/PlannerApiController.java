@@ -21,7 +21,12 @@ public class PlannerApiController {
     private final PlannerService plannerService;
 
     @PostMapping("/post")
-    public ResponseEntity<?> save(@RequestBody PlannerSaveRequestDto requestDto) {
+    public ResponseEntity<?> save(@RequestBody PlannerSaveRequestDto requestDto, HttpServletRequest httpServletRequest) {
+        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
+        if(jwtToken == null){
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.FORBIDDEN), HttpStatus.FORBIDDEN);
+        }
+
         PlannerSaveRequestDto plannerSaveRequestDto = plannerService.savePlanner(requestDto);
         if (plannerSaveRequestDto == null) {
             return ResponseEntity.notFound().build();
