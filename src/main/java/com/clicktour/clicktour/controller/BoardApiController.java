@@ -6,6 +6,7 @@ import com.clicktour.clicktour.common.message.enums.SuccessMessage;
 import com.clicktour.clicktour.common.message.dto.ResponseDto;
 import com.clicktour.clicktour.common.service.CheckService;
 import com.clicktour.clicktour.domain.board.Board;
+import com.clicktour.clicktour.domain.board.dto.BoardDetailResponseDto;
 import com.clicktour.clicktour.domain.board.dto.BoardResponseDto;
 import com.clicktour.clicktour.domain.board.dto.BoardSaveRequestDto;
 import com.clicktour.clicktour.service.board.BoardService;
@@ -42,11 +43,21 @@ public class BoardApiController {
     }
 
     @GetMapping("")
-    private ResponseEntity<?> readBoardList(){
+    public ResponseEntity<?> readBoardList(){
         List<BoardResponseDto> boardResponseDtoList = boardService.readBoardList();
         if(boardResponseDtoList.isEmpty()){
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_BOARD), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(boardService.readBoardList(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> readBoardDetail(@PathVariable Long id){
+        BoardDetailResponseDto boardDetailResponseDto = boardService.readDetailBoard(id);
+        if(boardDetailResponseDto == null){
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_BOARD), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(boardDetailResponseDto, HttpStatus.OK);
     }
 }
