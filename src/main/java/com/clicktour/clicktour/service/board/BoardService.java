@@ -1,6 +1,7 @@
 package com.clicktour.clicktour.service.board;
 
 import com.clicktour.clicktour.domain.board.Board;
+import com.clicktour.clicktour.domain.board.dto.BoardDetailResponseDto;
 import com.clicktour.clicktour.domain.board.dto.BoardResponseDto;
 import com.clicktour.clicktour.domain.board.dto.BoardSaveRequestDto;
 import com.clicktour.clicktour.domain.users.Users;
@@ -38,5 +39,19 @@ public class BoardService {
     public List<BoardResponseDto> readBoardList(){
         return boardRepository.findAllDesc().
                 stream().map(BoardResponseDto :: new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public BoardDetailResponseDto readDetailBoard(Long id){
+
+        Board board = boardRepository.findById(id).orElse(null);
+
+        if(board == null){
+            return null;
+        }
+
+        boardRepository.updateView(id);
+
+        return new BoardDetailResponseDto(board);
     }
 }
