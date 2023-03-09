@@ -88,10 +88,8 @@ public class PlannerService {
     }
 
     @Transactional
-    public List<PlannerResponseDto> findVisiblePlannerList(String jwtToken){
-        UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(jwtToken);
-
-        return plannerRepository.findByUsersIdWithVisibility(userInfoResponseDto.getId()).
+    public List<PlannerResponseDto> findVisiblePlannerList(){
+        return plannerRepository.findByIdWithVisibility().
                 stream().map(PlannerResponseDto::new).
                 collect(Collectors.toList());
     }

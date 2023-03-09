@@ -17,6 +17,6 @@ public interface PlannerRepository extends JpaRepository<Planner, Long> {
 
     List<Planner> findByUsersId(Long userId);
 
-    @Query("SELECT p FROM Planner p WHERE p.users.id = :userId AND p.visibility = 'VTP200Y' ")
-    List<Planner> findByUsersIdWithVisibility(@Param("userId") Long userId);
+    @Query("SELECT p FROM Planner p WHERE p.visibility = 'VTP200Y' ORDER BY p.id DESC")
+    List<Planner> findByIdWithVisibility();
 }
