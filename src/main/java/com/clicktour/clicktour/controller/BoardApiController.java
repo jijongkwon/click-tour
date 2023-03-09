@@ -33,7 +33,7 @@ public class BoardApiController {
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.FORBIDDEN), HttpStatus.FORBIDDEN);
         }
 
-        Board board = boardService.save(requestDto);
+        Board board = boardService.saveBoard(requestDto);
 
         if (board == null) {
             return ResponseEntity.notFound().build();

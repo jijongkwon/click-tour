@@ -23,7 +23,7 @@ public class BoardService {
     private final UsersRepository usersRepository;
 
     @Transactional
-    public Board save(BoardSaveRequestDto requestDto){
+    public Board saveBoard(BoardSaveRequestDto requestDto){
         Optional<Users> users = usersRepository.findByNickname(requestDto.getNickname());
 
         if(users.isEmpty()){
