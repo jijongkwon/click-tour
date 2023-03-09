@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BoardResponseDto {
     private String title;
-    private String content;
+    private String nickname;
     private int view;
 
     public BoardResponseDto(Board board){
         this.title = board.getTitle();
-        this.content = board.getContent();
+        this.nickname = board.getUsers().getNickname();
         this.view = board.getView();
     }
 }
