@@ -7,9 +7,6 @@ import org.springframework.stereotype.Service;
 public class CheckService {
 
     public boolean checkJwtToken(String jwtToken){
-        if(jwtToken == null){
-            return true;
-        }
-        return false;
+        return jwtToken == null || jwtToken.equals("");
     }
 }
