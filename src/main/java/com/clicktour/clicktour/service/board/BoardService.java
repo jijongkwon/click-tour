@@ -64,6 +64,9 @@ public class BoardService {
         Users users = usersRepository.findByNickname(nickname).orElse(null);
         Board board = boardRepository.findById(id).orElse(null);
 
+        if(board == null){
+            return null;
+        }
         commentSaveRequestDto.setBoard(board);
         commentSaveRequestDto.setUsers(users);
 
