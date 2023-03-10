@@ -9,7 +9,10 @@ import com.clicktour.clicktour.domain.board.Board;
 import com.clicktour.clicktour.domain.board.dto.BoardDetailResponseDto;
 import com.clicktour.clicktour.domain.board.dto.BoardResponseDto;
 import com.clicktour.clicktour.domain.board.dto.BoardSaveRequestDto;
+import com.clicktour.clicktour.domain.board.dto.CommentSaveRequestDto;
+import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
 import com.clicktour.clicktour.service.board.BoardService;
+import com.clicktour.clicktour.service.users.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,7 @@ public class BoardApiController {
 
     private final BoardService boardService;
     private final CheckService checkService;
+    private final UsersService usersService;
 
     @PostMapping("/post")
     public ResponseEntity<?> save(@RequestBody BoardSaveRequestDto requestDto, HttpServletRequest httpServletRequest){
@@ -40,6 +44,23 @@ public class BoardApiController {
         }
 
         return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST_BOARD), HttpStatus.OK);
+    }
+
+    @PostMapping("/comments/post/{id}")
+    public ResponseEntity<?> saveComments(@PathVariable Long id, @RequestBody CommentSaveRequestDto commentSaveRequestDto,
+                                          HttpServletRequest httpServletRequest){
+        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
+
+        if(checkService.checkJwtToken(jwtToken)) {
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.FORBIDDEN), HttpStatus.FORBIDDEN);
+        }
+
+        UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(jwtToken);
+        if(boardService.saveComments(id,userInfoResponseDto.getNickname(), commentSaveRequestDto) == null){
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_BOARD), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST_COMMENT),HttpStatus.OK);
     }
 
     @GetMapping("")
