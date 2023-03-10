@@ -4,8 +4,10 @@ import com.clicktour.clicktour.domain.board.Board;
 import com.clicktour.clicktour.domain.board.dto.BoardDetailResponseDto;
 import com.clicktour.clicktour.domain.board.dto.BoardResponseDto;
 import com.clicktour.clicktour.domain.board.dto.BoardSaveRequestDto;
+import com.clicktour.clicktour.domain.board.dto.CommentSaveRequestDto;
 import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.repository.BoardRepository;
+import com.clicktour.clicktour.repository.CommentsRepository;
 import com.clicktour.clicktour.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UsersRepository usersRepository;
+    private final CommentsRepository commentsRepository;
 
     @Transactional
     public Board saveBoard(BoardSaveRequestDto requestDto){
@@ -53,5 +56,19 @@ public class BoardService {
         boardRepository.updateView(id);
 
         return new BoardDetailResponseDto(board);
+    }
+
+    @Transactional
+    public CommentSaveRequestDto saveComments(Long id, String nickname, CommentSaveRequestDto commentSaveRequestDto){
+
+        Users users = usersRepository.findByNickname(nickname).orElse(null);
+        Board board = boardRepository.findById(id).orElse(null);
+
+        commentSaveRequestDto.setBoard(board);
+        commentSaveRequestDto.setUsers(users);
+
+        commentsRepository.save(commentSaveRequestDto.toEntity());
+
+        return commentSaveRequestDto;
     }
 }
