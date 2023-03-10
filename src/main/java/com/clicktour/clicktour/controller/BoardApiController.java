@@ -10,7 +10,6 @@ import com.clicktour.clicktour.domain.board.dto.BoardDetailResponseDto;
 import com.clicktour.clicktour.domain.board.dto.BoardResponseDto;
 import com.clicktour.clicktour.domain.board.dto.BoardSaveRequestDto;
 import com.clicktour.clicktour.domain.board.dto.CommentSaveRequestDto;
-import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
 import com.clicktour.clicktour.service.board.BoardService;
 import com.clicktour.clicktour.service.users.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -55,8 +54,7 @@ public class BoardApiController {
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.FORBIDDEN), HttpStatus.FORBIDDEN);
         }
 
-        UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(jwtToken);
-        if(boardService.saveComments(id,userInfoResponseDto.getNickname(), commentSaveRequestDto) == null){
+        if(boardService.saveComments(id, usersService.getUserInfo(jwtToken).getNickname(), commentSaveRequestDto) == null){
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_BOARD), HttpStatus.NOT_FOUND);
         }
 
