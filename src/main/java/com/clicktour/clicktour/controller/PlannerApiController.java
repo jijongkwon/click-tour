@@ -4,7 +4,6 @@ import com.clicktour.clicktour.common.message.dto.ResponseDto;
 import com.clicktour.clicktour.common.message.enums.ErrorMessage;
 import com.clicktour.clicktour.common.message.dto.ExceptionDto;
 import com.clicktour.clicktour.common.message.enums.SuccessMessage;
-import com.clicktour.clicktour.common.service.CheckService;
 import com.clicktour.clicktour.domain.planner.dto.*;
 import com.clicktour.clicktour.service.planner.PlannerService;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +19,9 @@ import java.util.List;
 @RequestMapping("/api/v1/planner")
 public class PlannerApiController {
     private final PlannerService plannerService;
-    private final CheckService checkService;
 
     @PostMapping("/post")
-    public ResponseEntity<?> save(@RequestBody PlannerSaveRequestDto requestDto, HttpServletRequest httpServletRequest) {
-
-        System.out.println("1");
-        if(checkService.checkJwtToken(httpServletRequest.getHeader("X-AUTH-TOKEN"))){
-            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.FORBIDDEN), HttpStatus.FORBIDDEN);
-        }
+    public ResponseEntity<?> save(@RequestBody PlannerSaveRequestDto requestDto) {
 
         PlannerSaveRequestDto plannerSaveRequestDto = plannerService.savePlanner(requestDto);
         if (plannerSaveRequestDto == null) {
@@ -37,7 +30,7 @@ public class PlannerApiController {
         return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST_PLANNER), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     public ResponseEntity<?> readDetail(@PathVariable Long id) {
         PlannerDetailResponseDto plannerResponseDto = plannerService.findById(id);
         if(plannerResponseDto == null){
