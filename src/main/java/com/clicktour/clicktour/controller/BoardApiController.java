@@ -5,10 +5,7 @@ import com.clicktour.clicktour.common.message.enums.ErrorMessage;
 import com.clicktour.clicktour.common.message.enums.SuccessMessage;
 import com.clicktour.clicktour.common.message.dto.ResponseDto;
 import com.clicktour.clicktour.domain.board.Board;
-import com.clicktour.clicktour.domain.board.dto.BoardDetailResponseDto;
-import com.clicktour.clicktour.domain.board.dto.BoardResponseDto;
-import com.clicktour.clicktour.domain.board.dto.BoardSaveRequestDto;
-import com.clicktour.clicktour.domain.board.dto.CommentSaveRequestDto;
+import com.clicktour.clicktour.domain.board.dto.*;
 import com.clicktour.clicktour.service.board.BoardService;
 import com.clicktour.clicktour.service.users.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -68,6 +65,19 @@ public class BoardApiController {
         }
 
         return new ResponseEntity<>(boardDetailResponseDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{id}")
+    private ResponseEntity<?> updateBoard(@PathVariable Long id, HttpServletRequest httpServletRequest,
+                                          @RequestBody BoardUpdateRequestDto updateRequestDto){
+        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
+        Board board = boardService.updateBoard(id, usersService.getUserInfo(jwtToken).getNickname(), updateRequestDto);
+
+        if(board == null){
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_BOARD), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_DELETE_BOARD), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
