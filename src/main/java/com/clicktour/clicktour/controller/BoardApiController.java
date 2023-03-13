@@ -4,7 +4,6 @@ import com.clicktour.clicktour.common.message.dto.ExceptionDto;
 import com.clicktour.clicktour.common.message.enums.ErrorMessage;
 import com.clicktour.clicktour.common.message.enums.SuccessMessage;
 import com.clicktour.clicktour.common.message.dto.ResponseDto;
-import com.clicktour.clicktour.common.service.CheckService;
 import com.clicktour.clicktour.domain.board.Board;
 import com.clicktour.clicktour.domain.board.dto.BoardDetailResponseDto;
 import com.clicktour.clicktour.domain.board.dto.BoardResponseDto;
@@ -22,19 +21,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/board")
+@RequestMapping("/api/v1/board")
 public class BoardApiController {
 
     private final BoardService boardService;
-    private final CheckService checkService;
     private final UsersService usersService;
 
     @PostMapping("/post")
-    public ResponseEntity<?> save(@RequestBody BoardSaveRequestDto requestDto, HttpServletRequest httpServletRequest){
-
-        if(checkService.checkJwtToken(httpServletRequest.getHeader("X-AUTH-TOKEN"))) {
-            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.FORBIDDEN), HttpStatus.FORBIDDEN);
-        }
+    public ResponseEntity<?> save(@RequestBody BoardSaveRequestDto requestDto){
 
         Board board = boardService.saveBoard(requestDto);
 
@@ -50,10 +44,6 @@ public class BoardApiController {
                                           HttpServletRequest httpServletRequest){
         String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
 
-        if(checkService.checkJwtToken(jwtToken)) {
-            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.FORBIDDEN), HttpStatus.FORBIDDEN);
-        }
-
         if(boardService.saveComments(id, usersService.getUserInfo(jwtToken).getNickname(), commentSaveRequestDto) == null){
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_BOARD), HttpStatus.NOT_FOUND);
         }
@@ -61,7 +51,7 @@ public class BoardApiController {
         return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST_COMMENT),HttpStatus.OK);
     }
 
-    @GetMapping("")
+    @GetMapping("/list")
     public ResponseEntity<?> readBoardList(){
         List<BoardResponseDto> boardResponseDtoList = boardService.readBoardList();
         if(boardResponseDtoList.isEmpty()){
@@ -70,7 +60,7 @@ public class BoardApiController {
         return new ResponseEntity<>(boardService.readBoardList(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/list/{id}")
     public ResponseEntity<?> readBoardDetail(@PathVariable Long id){
         BoardDetailResponseDto boardDetailResponseDto = boardService.readDetailBoard(id);
         if(boardDetailResponseDto == null){
@@ -78,5 +68,18 @@ public class BoardApiController {
         }
 
         return new ResponseEntity<>(boardDetailResponseDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteBoard(@PathVariable Long id, HttpServletRequest httpServletRequest){
+        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
+
+        Board board = boardService.deleteBoard(id, usersService.getUserInfo(jwtToken).getNickname());
+
+        if (board == null){
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_BOARD), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_DELETE_BOARD), HttpStatus.OK);
     }
 }
