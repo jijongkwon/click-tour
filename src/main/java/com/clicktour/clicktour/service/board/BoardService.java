@@ -74,4 +74,17 @@ public class BoardService {
 
         return commentSaveRequestDto;
     }
+
+    @Transactional
+    public Board deleteBoard(Long id, String nickname){
+        Board board = boardRepository.findById(id).orElse(null);
+
+        if(board == null || board.getUsers().getNickname().equals(nickname)){
+            return null;
+        }
+
+        boardRepository.delete(board);
+
+        return board;
+    }
 }
