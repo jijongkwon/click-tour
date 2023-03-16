@@ -1,6 +1,7 @@
 package com.clicktour.clicktour.service.board;
 
 import com.clicktour.clicktour.domain.board.Board;
+import com.clicktour.clicktour.domain.board.Comments;
 import com.clicktour.clicktour.domain.board.dto.*;
 import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.repository.BoardRepository;
@@ -75,12 +76,26 @@ public class BoardService {
     @Transactional
     public Board updateBoard(Long id , String nickname, BoardUpdateRequestDto updateRequestDto){
         Board board = boardRepository.findById(id).orElse(null);
+
         if(board == null || !board.getUsers().getNickname().equals(nickname)){
             return null;
         }
+
         board.update(updateRequestDto.getTitle(), updateRequestDto.getContent());
 
         return board;
+    }
+
+    @Transactional
+    public Comments updateComment(Long id, String nickname, CommentUpdateRequestDto commentUpdateRequestDto){
+        Comments comments = commentsRepository.findById(id).orElse(null);
+
+        if(comments == null || !comments.checkUser(nickname)){
+            return null;
+        }
+
+        comments.update(commentUpdateRequestDto.getContent());
+        return comments;
     }
 
     @Transactional
