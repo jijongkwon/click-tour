@@ -110,4 +110,17 @@ public class BoardService {
 
         return board;
     }
+
+    @Transactional
+    public Comments deleteComment(Long id, String nickname){
+        Comments comments = commentsRepository.findById(id).orElse(null);
+
+        if(comments == null || !comments.checkUser(nickname)){
+            return null;
+        }
+
+        commentsRepository.delete(comments);
+
+        return comments;
+    }
 }

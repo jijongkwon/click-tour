@@ -106,4 +106,16 @@ public class BoardApiController {
 
         return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_DELETE_BOARD), HttpStatus.OK);
     }
+
+    @DeleteMapping("/comments/delete/{id}")
+    private ResponseEntity<?> deleteComments(@PathVariable Long id, HttpServletRequest httpServletRequest){
+        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
+        Comments comments = boardService.deleteComment(id, usersService.getUserInfo(jwtToken).getNickname());
+
+        if(comments == null){
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_COMMENT),HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_DELETE_COMMENT), HttpStatus.OK);
+    }
 }
