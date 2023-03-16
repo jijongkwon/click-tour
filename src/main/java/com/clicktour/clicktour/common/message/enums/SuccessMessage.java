@@ -17,6 +17,7 @@ public enum SuccessMessage {
     SUCCESS_POST_COMMENT(200, "success post comment"),
     SUCCESS_DELETE_BOARD(200,"success delete board"),
     SUCCESS_UPDATE_BOARD(200,"success update board"),
+    SUCCESS_DELETE_COMMENT(200,"success delete comment"),
     SUCCESS_UPDATE_COMMENT(200,"success update comment");
 
     private final int code;
