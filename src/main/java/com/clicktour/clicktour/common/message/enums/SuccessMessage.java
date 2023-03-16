@@ -15,8 +15,9 @@ public enum SuccessMessage {
     SUCCESS_REGISTER(200, "success register"),
     SUCCESS_RECOMMEND(200,"success recommend"),
     SUCCESS_POST_COMMENT(200, "success post comment"),
-    SUCCESS_DELETE_BOARD(200,"success delete planner"),
-    SUCCESS_UPDATE_BOARD(200,"success update planner");
+    SUCCESS_DELETE_BOARD(200,"success delete board"),
+    SUCCESS_UPDATE_BOARD(200,"success update board"),
+    SUCCESS_UPDATE_COMMENT(200,"success update comment");
 
     private final int code;
     private final String message;
