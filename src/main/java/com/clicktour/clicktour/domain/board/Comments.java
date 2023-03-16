@@ -40,4 +40,8 @@ public class Comments extends BaseTimeEntity{
     public void update(String comment){
         this.comment =comment;
     }
+
+    public boolean checkUser(String nickname){
+        return this.users.getNickname().equals(nickname);
+    }
 }
