@@ -5,6 +5,7 @@ import com.clicktour.clicktour.common.message.enums.ErrorMessage;
 import com.clicktour.clicktour.common.message.enums.SuccessMessage;
 import com.clicktour.clicktour.common.message.dto.ResponseDto;
 import com.clicktour.clicktour.domain.board.Board;
+import com.clicktour.clicktour.domain.board.Comments;
 import com.clicktour.clicktour.domain.board.dto.*;
 import com.clicktour.clicktour.service.board.BoardService;
 import com.clicktour.clicktour.service.users.UsersService;
@@ -68,7 +69,7 @@ public class BoardApiController {
     }
 
     @PutMapping("/update/{id}")
-    private ResponseEntity<?> updateBoard(@PathVariable Long id, HttpServletRequest httpServletRequest,
+    public ResponseEntity<?> updateBoard(@PathVariable Long id, HttpServletRequest httpServletRequest,
                                           @RequestBody BoardUpdateRequestDto updateRequestDto){
         String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
         Board board = boardService.updateBoard(id, usersService.getUserInfo(jwtToken).getNickname(), updateRequestDto);
@@ -77,10 +78,23 @@ public class BoardApiController {
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_BOARD), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_DELETE_BOARD), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_UPDATE_BOARD), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PutMapping("/comments/update/{id}")
+    public  ResponseEntity<?> updateComments(@PathVariable Long id, HttpServletRequest httpServletRequest,
+                                             @RequestBody CommentUpdateRequestDto commentUpdateRequestDto){
+        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
+        Comments comments = boardService.updateComment(id, usersService.getUserInfo(jwtToken).getNickname(), commentUpdateRequestDto);
+
+        if(comments == null){
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_COMMENT),HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_UPDATE_COMMENT), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/list/delete/{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable Long id, HttpServletRequest httpServletRequest){
         String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
 
