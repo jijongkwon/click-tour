@@ -22,6 +22,7 @@ public class PlannerApiController {
 
     @PostMapping("/post")
     public ResponseEntity<?> save(@RequestBody PlannerSaveRequestDto requestDto) {
+
         PlannerSaveRequestDto plannerSaveRequestDto = plannerService.savePlanner(requestDto);
         if (plannerSaveRequestDto == null) {
             return ResponseEntity.notFound().build();
@@ -29,24 +30,24 @@ public class PlannerApiController {
         return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_POST_PLANNER), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PlannerDetailResponseDto> readDetail(@PathVariable Long id) {
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<?> readDetail(@PathVariable Long id) {
         PlannerDetailResponseDto plannerResponseDto = plannerService.findById(id);
         if(plannerResponseDto == null){
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_PLANNER), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(plannerResponseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<PlannerResponseDto>> readList(HttpServletRequest httpServletRequest){
+    @GetMapping("")
+    public ResponseEntity<?> readList(HttpServletRequest httpServletRequest){
         String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
         List<PlannerResponseDto> plannerResponseDtoList = plannerService.findIndividualPlannerList(jwtToken);
-        if(plannerResponseDtoList ==  null){
-            return ResponseEntity.notFound().build();
+        if(plannerResponseDtoList.isEmpty()){
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_PLANNER), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<List<PlannerResponseDto>>(plannerResponseDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(plannerResponseDtoList, HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")
@@ -73,11 +74,10 @@ public class PlannerApiController {
     }
 
     @GetMapping("/visible")
-    public ResponseEntity<List<PlannerResponseDto>> readVisiblePlannerList(HttpServletRequest httpServletRequest){
-        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
-        List<PlannerResponseDto> plannerResponseDtoList = plannerService.findVisiblePlannerList(jwtToken);
-        if(plannerResponseDtoList ==  null){
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> readVisiblePlannerList(){
+        List<PlannerResponseDto> plannerResponseDtoList = plannerService.findVisiblePlannerList();
+        if(plannerResponseDtoList.isEmpty()){
+            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_PLANNER), HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(plannerResponseDtoList, HttpStatus.OK);
