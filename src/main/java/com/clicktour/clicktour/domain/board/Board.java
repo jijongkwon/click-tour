@@ -1,5 +1,6 @@
 package com.clicktour.clicktour.domain.board;
 
+import com.clicktour.clicktour.domain.BaseTimeEntity;
 import com.clicktour.clicktour.domain.users.Users;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Board {
+public class Board extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
