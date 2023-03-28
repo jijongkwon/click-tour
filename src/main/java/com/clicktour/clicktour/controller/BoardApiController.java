@@ -68,7 +68,7 @@ public class BoardApiController {
         return new ResponseEntity<>(boardDetailResponseDto, HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/list/update/{id}")
     public ResponseEntity<?> updateBoard(@PathVariable Long id, HttpServletRequest httpServletRequest,
                                           @RequestBody BoardUpdateRequestDto updateRequestDto){
         String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
