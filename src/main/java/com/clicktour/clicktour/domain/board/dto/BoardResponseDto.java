@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class BoardResponseDto {
+
+    private Long id;
     private String title;
     private String nickname;
     private int view;
@@ -18,6 +20,7 @@ public class BoardResponseDto {
 
 
     public BoardResponseDto(Board board){
+        this.id = board.getId();
         this.title = board.getTitle();
         this.nickname = board.getUsers().getNickname();
         this.view = board.getView();
