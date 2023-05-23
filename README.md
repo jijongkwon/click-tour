@@ -32,7 +32,7 @@
 <br>
 <br>
 
-### 게시글
+### 게시판
 ![readBoard.png](img%2FreadBoard.png)
 <br> 
 ![writeBoard.png](img%2FwriteBoard.png)
