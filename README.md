@@ -20,7 +20,7 @@
 
 ## 🖥️ 동작화면
 
-[[ 🎥 ]](https://drive.google.com/file/d/1ducgywz9RQbz5r29hdoIV2y0VeRTOiN5/view)
+[ 🎥 시연영상 링크 ](https://drive.google.com/file/d/1ducgywz9RQbz5r29hdoIV2y0VeRTOiN5/view)  <- click
 
 ### 메인화면
 ![main.png](img%2Fmain.png)
