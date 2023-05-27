@@ -38,13 +38,13 @@ class UsersServiceTest {
 
 
         UserJoinRequestDto userJoinRequestDto = UserJoinRequestDto.builder()
-                .loginId("id")
-                .name("name")
-                .nickname("test")
-                .email("test@test.com")
-                .loginPassword("pw")
-                .age(1)
-                .gender("man")
+                .loginId(loginId)
+                .name(name)
+                .nickname(nickname)
+                .email(email)
+                .loginPassword(loginPassword)
+                .age(age)
+                .gender(gender)
                 .build();
 
         // when
