@@ -1,13 +1,13 @@
-package com.clicktour.clicktour.common.message.dto;
+package com.clicktour.clicktour.common.dto;
 
-import com.clicktour.clicktour.common.message.enums.ErrorMessage;
-import lombok.Getter;
+import com.clicktour.clicktour.common.enums.ErrorMessage;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@SuperBuilder
 public class ExceptionDto {
 
     private int stateCode;
