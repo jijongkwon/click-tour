@@ -1,9 +1,9 @@
 package com.clicktour.clicktour.controller;
 
-import com.clicktour.clicktour.common.message.dto.ExceptionDto;
-import com.clicktour.clicktour.common.message.enums.ErrorMessage;
-import com.clicktour.clicktour.common.message.enums.SuccessMessage;
-import com.clicktour.clicktour.common.message.dto.ResponseDto;
+import com.clicktour.clicktour.common.dto.ExceptionDto;
+import com.clicktour.clicktour.common.enums.ErrorMessage;
+import com.clicktour.clicktour.common.enums.SuccessMessage;
+import com.clicktour.clicktour.common.dto.ResponseDto;
 import com.clicktour.clicktour.domain.board.Board;
 import com.clicktour.clicktour.domain.board.Comments;
 import com.clicktour.clicktour.domain.board.dto.*;
