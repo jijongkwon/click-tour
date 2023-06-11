@@ -36,17 +36,17 @@ public class RegisterValidator implements Validator {
 
         // 이메일 중복 체크
         if (usersRepository.existsByEmail(userJoinRequestDto.getEmail())) {
-            errors.reject(userJoinRequestDto.getEmail(), "이미 사용중인 이메일입니다.");
+            errors.reject(userJoinRequestDto.getEmail(), "이메일 중복");
         }
 
         // 아이디 중복 체크
         if (usersRepository.existsByLoginId(userJoinRequestDto.getLoginId())) {
-            errors.reject(userJoinRequestDto.getLoginId(), "이미 사용중인 아이디입니다.");
+            errors.reject(userJoinRequestDto.getLoginId(), "아이디 중복");
         }
 
         // 닉네임 중복 체크
         if (usersRepository.existsByNickname(userJoinRequestDto.getNickname())) {
-            errors.reject(userJoinRequestDto.getNickname(), "이미 사용중인 닉네임입니다.");
+            errors.reject(userJoinRequestDto.getNickname(), "닉네임 중복");
         }
     }
 }
