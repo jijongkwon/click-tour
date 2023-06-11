@@ -1,42 +1,40 @@
 package com.clicktour.clicktour.service.users;
 
+import com.clicktour.clicktour.common.message.enums.ErrorMessage;
 import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.domain.users.dto.UserJoinRequestDto;
 import com.clicktour.clicktour.repository.UsersRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class) // JUnit5 스프링 컨테이너 시작 -> 의존성 주입 가능
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class UsersServiceTest {
-    @Autowired
+    @InjectMocks
     private UsersService usersService;
 
-    @Autowired
+    @Mock
     private UsersRepository usersRepository;
 
-    @Autowired
+    @Mock
     private PasswordEncoder passwordEncoder;
+
+    String loginId = "id";
+    String name = "name";
+    String nickname = "test";
+    String email = "test@test.com";
+    String loginPassword = "pw";
+    int age = 1;
+    String gender = "man";
 
     @Test
     void register() {
         // given
-        String loginId = "id";
-        String name = "name";
-        String nickname = "test";
-        String email = "test@test.com";
-        String loginPassword = "pw";
-        int age = 1;
-        String gender = "man";
-
-
         UserJoinRequestDto userJoinRequestDto = UserJoinRequestDto.builder()
                 .loginId(loginId)
                 .name(name)
@@ -51,8 +49,7 @@ class UsersServiceTest {
         usersService.register(userJoinRequestDto);
 
         Users users = usersRepository.findByNickname("test").orElseThrow(() ->
-                new IllegalArgumentException("해당 닉네임의 유저가 없습니다.")
-        );
+                new IllegalArgumentException("닉네임이 일치하지 않음"));
 
         // then
         assertEquals(loginId, users.getLoginId());
@@ -63,6 +60,36 @@ class UsersServiceTest {
         assertEquals(gender, users.getGender());
         boolean passwordMatches = passwordEncoder.matches(loginPassword, users.getLoginPassword());
         assertTrue(passwordMatches);
+    }
+
+    @Test
+    void 아이디_중복확인_테스트(){
+        // given
+        String checkId = "id";
+        Users users = Users.builder().loginId(loginId).build();
+
+        // then
+        assertTrue(users.checkId(checkId));
+    }
+
+    @Test
+    void 닉네임_중복확인_테스트(){
+        // given
+        String checkNickname = "test";
+        Users users = Users.builder().nickname(nickname).build();
+
+        // then
+        assertTrue(users.checkNickname(checkNickname));
+    }
+
+    @Test
+    void 이메일_중복확인_테스트(){
+        // given
+        String checkEmail = "test@test.com";
+        Users users = Users.builder().email(email).build();
+
+        // then
+        assertTrue(users.checkEmail(checkEmail));
     }
 
     @Test
