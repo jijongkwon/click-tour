@@ -1,10 +1,11 @@
 package com.clicktour.clicktour.controller;
 
-import com.clicktour.clicktour.common.message.dto.ResponseDto;
-import com.clicktour.clicktour.common.message.enums.ErrorMessage;
-import com.clicktour.clicktour.common.message.enums.SuccessMessage;
+import com.clicktour.clicktour.common.dto.ResponseDto;
+import com.clicktour.clicktour.common.enums.ErrorMessage;
+import com.clicktour.clicktour.common.enums.SuccessMessage;
+import com.clicktour.clicktour.common.validators.RegisterValidator;
 import com.clicktour.clicktour.config.dto.JwtTokenResponseDto;
-import com.clicktour.clicktour.common.message.dto.ExceptionDto;
+import com.clicktour.clicktour.common.dto.ExceptionDto;
 import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
 import com.clicktour.clicktour.domain.users.dto.UserJoinRequestDto;
 import com.clicktour.clicktour.domain.users.dto.UserLoginRequestDto;
@@ -12,26 +13,27 @@ import com.clicktour.clicktour.service.users.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/users")
 public class UsersApiController {
     private final UsersService usersService;
-
+    private final RegisterValidator registerValidator;
 
     // 회원가입
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserJoinRequestDto userJoinRequestDto) {
+    public ResponseEntity<?> register(@Valid @RequestBody UserJoinRequestDto userJoinRequestDto, BindingResult bindingResult) {
+        registerValidator.validate(userJoinRequestDto, bindingResult);
 
-        // 중복된 아이디 또는 닉네임이 있을 때
-        if(usersService.register(userJoinRequestDto) == null){
-            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.DUPLICATE_ID_OR_NICKNAME_OR_EMAIL),
-                    HttpStatus.BAD_REQUEST);
-        }
+        usersService.checkUserValidate(bindingResult);
+
+        usersService.register(userJoinRequestDto);
+
         return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_REGISTER), HttpStatus.OK);
     }
 
