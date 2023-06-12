@@ -59,4 +59,23 @@ class RegisterValidatorTest {
         assertTrue(errors.hasErrors());
         assertEquals("아이디 중복", errors.getFieldError("loginId").getDefaultMessage());
     }
+
+    @Test
+    public void 닉네임_중복_확인_테스트(){
+        // Given
+        UserJoinRequestDto userJoinRequestDto = UserJoinRequestDto.builder()
+                .nickname("test")
+                .build();
+
+
+        Mockito.when(usersRepository.existsByNickname("test")).thenReturn(true);
+
+        // When
+        Errors errors = new BeanPropertyBindingResult(userJoinRequestDto, "userJoinRequestDto");
+        registerValidator.validate(userJoinRequestDto, errors);
+
+        // Then
+        assertTrue(errors.hasErrors());
+        assertEquals("닉네임 중복", errors.getFieldError("nickname").getDefaultMessage());
+    }
 }
