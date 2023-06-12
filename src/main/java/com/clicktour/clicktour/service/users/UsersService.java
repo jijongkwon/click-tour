@@ -1,5 +1,6 @@
 package com.clicktour.clicktour.service.users;
 
+import com.clicktour.clicktour.common.exception.NotValidException;
 import com.clicktour.clicktour.config.security.JwtTokenProvider;
 import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
@@ -7,11 +8,15 @@ import com.clicktour.clicktour.domain.users.dto.UserJoinRequestDto;
 import com.clicktour.clicktour.domain.users.dto.UserLoginRequestDto;
 import com.clicktour.clicktour.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,16 +28,6 @@ public class UsersService {
 
     @Transactional
     public UserJoinRequestDto register(UserJoinRequestDto userJoinRequestDto){
-        Optional<Users> usersId = usersRepository.findByLoginId(userJoinRequestDto.getLoginId());
-        Optional<Users> usersNickname = usersRepository.findByNickname(userJoinRequestDto.getNickname());
-        Optional<Users> usersEmail = usersRepository.findByEmail(userJoinRequestDto.getEmail());
-
-        // id, nickname, email 중복
-        if(usersId.isPresent() || usersNickname.isPresent() || usersEmail.isPresent()){
-            return null;
-        }
-
-        // 회원가입
         userJoinRequestDto.setLoginPassword(passwordEncoder.encode(userJoinRequestDto.getLoginPassword()));
         usersRepository.save(userJoinRequestDto.toEntity());
         return userJoinRequestDto;
@@ -63,6 +58,22 @@ public class UsersService {
         }
 
         return users.map(UserInfoResponseDto::new).orElse(null);
+    }
+
+    /**
+     * 회원가입 유효성 검사
+     * @param bindingResult
+     */
+    public void checkUserValidate(BindingResult bindingResult){
+        if(bindingResult.hasErrors()) {
+            List<String> errorList =
+                    bindingResult.getFieldErrors()
+                            .stream()
+                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                            .collect(Collectors.toList());
+
+            throw new NotValidException(errorList);
+        }
     }
 }
 
