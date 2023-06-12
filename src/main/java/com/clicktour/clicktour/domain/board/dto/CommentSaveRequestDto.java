@@ -14,7 +14,7 @@ public class CommentSaveRequestDto {
     private Users users;
     private Board board;
 
-    public Comments toEntity(){
+    public Comments toEntity() {
         Comments comments = Comments.builder()
                 .id(id)
                 .comment(comment)

@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Comments extends BaseTimeEntity{
+public class Comments extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,19 +29,18 @@ public class Comments extends BaseTimeEntity{
     private Users users;
 
     @Builder
-    public Comments(Long id, String comment, Board board, Users user)
-    {
+    public Comments(Long id, String comment, Board board, Users user) {
         this.id = id;
         this.comment = comment;
         this.board = board;
         this.users = user;
     }
 
-    public void update(String comment){
-        this.comment =comment;
+    public void update(String comment) {
+        this.comment = comment;
     }
 
-    public boolean checkUser(String nickname){
+    public boolean checkUser(String nickname) {
         return this.users.getNickname().equals(nickname);
     }
 }

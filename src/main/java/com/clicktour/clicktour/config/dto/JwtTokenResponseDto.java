@@ -9,7 +9,7 @@ public class JwtTokenResponseDto {
 
     private String JwtToken;
 
-    public JwtTokenResponseDto(String jwtToken){
+    public JwtTokenResponseDto(String jwtToken) {
         this.JwtToken = jwtToken;
     }
 }

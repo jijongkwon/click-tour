@@ -13,12 +13,12 @@ public class PlaceSaveRequestDto {
     private Planner planner;
 
     @Builder
-    public PlaceSaveRequestDto(Place place, Planner planner){
+    public PlaceSaveRequestDto(Place place, Planner planner) {
         this.place = place.getPlace();
         this.planner = planner;
     }
 
-    public Place toEntity(){
+    public Place toEntity() {
         return Place.builder().
                 place(place).
                 planner(planner).

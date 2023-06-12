@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum ErrorMessage {
 
     NOT_FOUND_PLANNER(404, "not found planner"),
-    DUPLICATE_ID_OR_NICKNAME_OR_EMAIL(400,"duplicateIdOrNicknameOrEmail"),
+    DUPLICATE_ID_OR_NICKNAME_OR_EMAIL(400, "duplicateIdOrNicknameOrEmail"),
     NOT_FOUND_ID(404, "not found id"),
     NOT_FOUND_USER(404, "not found user"),
     NOT_FOUND_BOARD(404, "not found board"),

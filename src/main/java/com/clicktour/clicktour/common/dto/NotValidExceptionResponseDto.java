@@ -7,6 +7,6 @@ import java.util.List;
 
 @Getter
 @SuperBuilder
-public class NotValidExceptionResponseDto extends ExceptionDto{
+public class NotValidExceptionResponseDto extends ExceptionDto {
     private final List<String> errors;
 }

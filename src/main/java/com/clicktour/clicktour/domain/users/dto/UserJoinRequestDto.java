@@ -23,7 +23,7 @@ public class UserJoinRequestDto {
 
     @Builder
     public UserJoinRequestDto(String loginId, String loginPassword, String email, String name, String nickname,
-                              int age, String gender, String address, String intro, String picture){
+                              int age, String gender, String address, String intro, String picture) {
         this.loginId = loginId;
         this.loginPassword = loginPassword;
         this.email = email;
@@ -36,7 +36,7 @@ public class UserJoinRequestDto {
         this.picture = picture;
     }
 
-    public Users toEntity(){
+    public Users toEntity() {
         return Users.builder().
                 loginId(loginId).
                 loginPassword(loginPassword).

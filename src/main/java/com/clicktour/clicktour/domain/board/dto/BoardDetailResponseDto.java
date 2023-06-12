@@ -19,7 +19,7 @@ public class BoardDetailResponseDto {
     private LocalDate modifiedDate;
     private List<CommentResponseDto> commentResponseDtoList;
 
-    public BoardDetailResponseDto(Board board){
+    public BoardDetailResponseDto(Board board) {
         this.title = board.getTitle();
         this.nickname = board.getUsers().getNickname();
         this.content = board.getContent();

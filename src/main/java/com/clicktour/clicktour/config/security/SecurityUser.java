@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.User;
 
 @Getter
 public class SecurityUser extends User {
-    private Users users;
+    private final Users users;
 
-    public SecurityUser(Users users){
+    public SecurityUser(Users users) {
         super(users.getLoginId(), users.getLoginPassword(),
                 AuthorityUtils.createAuthorityList(users.getRole().toString()));
         this.users = users;

@@ -15,7 +15,7 @@ public class CommentResponseDto {
     private LocalDate modifiedDate;
     private String nickname;
 
-    public CommentResponseDto(Comments comments){
+    public CommentResponseDto(Comments comments) {
         this.id = comments.getId();
         this.comment = comments.getComment();
         this.createdDate = comments.getCreatedDate();

@@ -48,7 +48,7 @@ public class Plan {
         this.planner = planner;
     }
 
-    public void update(String name, String memo, Date date, Float x, Float y){
+    public void update(String name, String memo, Date date, Float x, Float y) {
         this.name = name;
         this.memo = memo;
         this.date = date;

@@ -13,7 +13,7 @@ public class ExceptionDto {
     private int stateCode;
     private String message;
 
-    public ExceptionDto(ErrorMessage errorMessage){
+    public ExceptionDto(ErrorMessage errorMessage) {
         this.stateCode = errorMessage.getCode();
         this.message = errorMessage.getMessage();
     }

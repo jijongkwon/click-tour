@@ -20,12 +20,10 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private String secretKey = "test";
-
-    // 토큰 유효시간 12시간
-    private long tokenValidTime = 12 * 60 * 60 * 1000L;
-
     private final UserDetailsService userDetailsService;
+    private String secretKey = "test";
+    // 토큰 유효시간 12시간
+    private final long tokenValidTime = 12 * 60 * 60 * 1000L;
 
     // 객체 초기화, secretKey를 Base64로 인코딩
     protected void init() {

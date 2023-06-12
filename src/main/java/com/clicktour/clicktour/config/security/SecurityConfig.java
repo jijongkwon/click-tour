@@ -1,8 +1,5 @@
 package com.clicktour.clicktour.config.security;
 
-import com.clicktour.clicktour.config.security.JwtAuthenticationFilter;
-import com.clicktour.clicktour.config.security.JwtTokenProvider;
-import com.clicktour.clicktour.domain.users.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;

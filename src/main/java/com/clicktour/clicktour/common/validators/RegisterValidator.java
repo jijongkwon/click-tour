@@ -3,7 +3,6 @@ package com.clicktour.clicktour.common.validators;
 import com.clicktour.clicktour.domain.users.dto.UserJoinRequestDto;
 import com.clicktour.clicktour.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -16,8 +15,9 @@ public class RegisterValidator implements Validator {
 
     /**
      * supports() 메서드는 Validator 인터페이스의 메서드로서, 주어진 클래스가 Validator가 유효성 검사를 수행할 수 있는 대상인지 여부를 결정
+     *
      * @param clazz the {@link Class} that this {@link Validator} is
-     * being asked if it can {@link #validate(Object, Errors) validate}
+     *              being asked if it can {@link #validate(Object, Errors) validate}
      * @return boolean
      */
     @Override
@@ -27,6 +27,7 @@ public class RegisterValidator implements Validator {
 
     /**
      * 중복 체크
+     *
      * @param target the object that is to be validated
      * @param errors contextual state about the validation process
      */

@@ -11,7 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 class RegisterValidatorTest {
@@ -22,7 +23,7 @@ class RegisterValidatorTest {
     private UsersRepository usersRepository;
 
     @Test
-    public void 이메일_중복_확인_테스트(){
+    public void 이메일_중복_확인_테스트() {
         // Given
         UserJoinRequestDto userJoinRequestDto = UserJoinRequestDto.builder()
                 .email("test@example.com")
@@ -41,7 +42,7 @@ class RegisterValidatorTest {
     }
 
     @Test
-    public void 아이디_중복_확인_테스트(){
+    public void 아이디_중복_확인_테스트() {
         // Given
         UserJoinRequestDto userJoinRequestDto = UserJoinRequestDto.builder()
                 .loginId("test")
@@ -60,7 +61,7 @@ class RegisterValidatorTest {
     }
 
     @Test
-    public void 닉네임_중복_확인_테스트(){
+    public void 닉네임_중복_확인_테스트() {
         // Given
         UserJoinRequestDto userJoinRequestDto = UserJoinRequestDto.builder()
                 .nickname("test")

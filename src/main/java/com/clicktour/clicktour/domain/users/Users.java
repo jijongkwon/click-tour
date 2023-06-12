@@ -53,15 +53,15 @@ public class Users extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public boolean checkId(String id){
+    public boolean checkId(String id) {
         return this.loginId.equals(id);
     }
 
-    public boolean checkNickname(String nickname){
+    public boolean checkNickname(String nickname) {
         return this.nickname.equals(nickname);
     }
 
-    public boolean checkEmail(String email){
+    public boolean checkEmail(String email) {
         return this.email.equals(email);
     }
 }

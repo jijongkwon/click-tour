@@ -36,14 +36,14 @@ public class Board extends BaseTimeEntity {
     private List<Comments> comments;
 
     @Builder
-    public Board(String title, String content, int view, Users users){
+    public Board(String title, String content, int view, Users users) {
         this.title = title;
         this.content = content;
         this.view = view;
         this.users = users;
     }
 
-    public void update(String title, String content){
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
     }

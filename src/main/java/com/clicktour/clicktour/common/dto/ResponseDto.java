@@ -11,7 +11,7 @@ public class ResponseDto {
     private int stateCode;
     private String message;
 
-    public ResponseDto(SuccessMessage successMessage){
+    public ResponseDto(SuccessMessage successMessage) {
         this.stateCode = successMessage.getCode();
         this.message = successMessage.getMessage();
     }

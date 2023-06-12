@@ -1,7 +1,7 @@
 package com.clicktour.clicktour.domain.planner.dto;
 
-import com.clicktour.clicktour.domain.planner.Planner;
 import com.clicktour.clicktour.domain.planner.Plan;
+import com.clicktour.clicktour.domain.planner.Planner;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

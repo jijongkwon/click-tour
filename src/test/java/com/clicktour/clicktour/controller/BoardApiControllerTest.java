@@ -2,8 +2,6 @@ package com.clicktour.clicktour.controller;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class BoardApiControllerTest {
 
     @Test

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class CommentUpdateRequestDto {
     private String content;
 
-    public CommentUpdateRequestDto(Comments comments){
+    public CommentUpdateRequestDto(Comments comments) {
         this.content = comments.getComment();
     }
 }

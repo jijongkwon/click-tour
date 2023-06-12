@@ -34,7 +34,7 @@ public class PlannerService {
 
         Optional<Users> users = usersRepository.findByNickname(plannerSaveRequestDto.getNickname());
 
-        if(users.isEmpty()){
+        if (users.isEmpty()) {
             return null;
         }
 
@@ -55,9 +55,9 @@ public class PlannerService {
         }
 
         // place 저장
-        for (Place place : plannerSaveRequestDto.getPlaceList()){
+        for (Place place : plannerSaveRequestDto.getPlaceList()) {
             PlaceSaveRequestDto placeSaveRequestDto = new PlaceSaveRequestDto(place, planner);
-            if(placeRepository.save(placeSaveRequestDto.toEntity()).getId() == null){
+            if (placeRepository.save(placeSaveRequestDto.toEntity()).getId() == null) {
                 return null;
             }
         }
@@ -80,7 +80,7 @@ public class PlannerService {
     }
 
     @Transactional
-    public List<PlannerResponseDto> findIndividualPlannerList(String jwtToken){
+    public List<PlannerResponseDto> findIndividualPlannerList(String jwtToken) {
         UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(jwtToken);
         return plannerRepository.findByUsersId(userInfoResponseDto.getId()).
                 stream().map(PlannerResponseDto::new).
@@ -88,7 +88,7 @@ public class PlannerService {
     }
 
     @Transactional
-    public List<PlannerResponseDto> findVisiblePlannerList(){
+    public List<PlannerResponseDto> findVisiblePlannerList() {
         return plannerRepository.findByIdWithVisibility().
                 stream().map(PlannerResponseDto::new).
                 collect(Collectors.toList());
@@ -121,23 +121,23 @@ public class PlannerService {
 
     @Transactional
     public void updatePlan(PlannerUpdateRequestDto requestDto, Planner planner) {
-        for(Plan plan : requestDto.getPlanList()){
-            if(plan.getId() == null){
+        for (Plan plan : requestDto.getPlanList()) {
+            if (plan.getId() == null) {
                 PlanSaveRequestDto planSaveRequestDto = new PlanSaveRequestDto(plan, planner);
                 planRepository.save(planSaveRequestDto.toEntity());
             }
-            if(plan.getId() != null){
+            if (plan.getId() != null) {
                 Plan updatePlan = planRepository.findById(plan.getId()).
                         orElseThrow(() -> new IllegalArgumentException("해당 플랜이 존재하지 않습니다."));
 
-                updatePlan.update(plan.getName(),plan.getMemo(),plan.getDate(),plan.getX(),plan.getY());
+                updatePlan.update(plan.getName(), plan.getMemo(), plan.getDate(), plan.getX(), plan.getY());
             }
         }
     }
 
     @Transactional
-    public void updatePlace(PlannerUpdateRequestDto requestDto, Planner planner){
-        for(Place place : requestDto.getPlaceList()){
+    public void updatePlace(PlannerUpdateRequestDto requestDto, Planner planner) {
+        for (Place place : requestDto.getPlaceList()) {
             PlaceSaveRequestDto placeSaveRequestDto = new PlaceSaveRequestDto(place, planner);
             placeRepository.save(placeSaveRequestDto.toEntity());
         }
@@ -152,7 +152,7 @@ public class PlannerService {
 
     @Transactional
     public void placeDelete(Planner planner) {
-        for(Place place : planner.getPlaceList()){
+        for (Place place : planner.getPlaceList()) {
             Place deletePlace = placeRepository.findById(place.getId()).orElseThrow(() -> new
                     IllegalArgumentException("해당 플랜이 플레이스가 않습니다. id : " + place.getId()));
             placeRepository.delete(deletePlace);
@@ -160,9 +160,9 @@ public class PlannerService {
     }
 
     @Transactional
-    public void planDelete(PlannerUpdateRequestDto requestDto, Planner planner){
-        for(Plan plan : planner.getPlanList()){
-            if(!isIdInPlanner(plan, requestDto)){
+    public void planDelete(PlannerUpdateRequestDto requestDto, Planner planner) {
+        for (Plan plan : planner.getPlanList()) {
+            if (!isIdInPlanner(plan, requestDto)) {
                 Plan deletePlan = planRepository.findById(plan.getId()).orElseThrow(() -> new
                         IllegalArgumentException("해당 플랜이 존재하지 않습니다. id : " + plan.getId()));
                 planRepository.delete(deletePlan);
@@ -171,29 +171,29 @@ public class PlannerService {
     }
 
     @Transactional
-    public PlannerDetailResponseDto recommendPlanner(PlannerRecommendRequestDto recommendRequestDto){
-        List<Planner> allPlanners =  plannerRepository.findAllDesc();
+    public PlannerDetailResponseDto recommendPlanner(PlannerRecommendRequestDto recommendRequestDto) {
+        List<Planner> allPlanners = plannerRepository.findAllDesc();
         // 추천 목록 추가
-        List<Planner> recommendPlannerList = addRecommendPlannerList(allPlanners,recommendRequestDto);
+        List<Planner> recommendPlannerList = addRecommendPlannerList(allPlanners, recommendRequestDto);
 
         // 랜덤 번호 생성
         int randomIndex = creatRandomNumber(recommendPlannerList) - 1;
 
-        if(randomIndex == -2){
+        if (randomIndex == -2) {
             return null;
         }
 
         return new PlannerDetailResponseDto(recommendPlannerList.get(randomIndex));
     }
 
-    public List<Planner> addRecommendPlannerList(List<Planner> allPlanners, PlannerRecommendRequestDto recommendRequestDto){
+    public List<Planner> addRecommendPlannerList(List<Planner> allPlanners, PlannerRecommendRequestDto recommendRequestDto) {
         List<Planner> recommendPlannerList = new ArrayList<>();
 
-        for(Planner planner : allPlanners) {
+        for (Planner planner : allPlanners) {
             if (isMeetRequirementForRecommendPlanner(planner, recommendRequestDto)) {
                 for (Place requestPlace : recommendRequestDto.getPlaceList()) {
-                    for(Place responsePlace : planner.getPlaceList()){
-                        if(requestPlace.getPlace().equals(responsePlace.getPlace())){
+                    for (Place responsePlace : planner.getPlaceList()) {
+                        if (requestPlace.getPlace().equals(responsePlace.getPlace())) {
                             recommendPlannerList.add(planner);
                             break;
                         }
@@ -205,62 +205,58 @@ public class PlannerService {
     }
 
     public boolean isIdInPlanner(Plan plan, PlannerUpdateRequestDto requestDto) {
-        for(Plan planRequestDto : requestDto.getPlanList()){
-            if(planRequestDto.getId() == null){
+        for (Plan planRequestDto : requestDto.getPlanList()) {
+            if (planRequestDto.getId() == null) {
                 continue;
             }
-            if(planRequestDto.getId().equals(plan.getId())){
+            if (planRequestDto.getId().equals(plan.getId())) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isEqualStartDate(Planner planner, PlannerRecommendRequestDto recommendRequestDto){
+    public boolean isEqualStartDate(Planner planner, PlannerRecommendRequestDto recommendRequestDto) {
         return planner.getStart_date().toString().equals(transportDateFormat(recommendRequestDto.getStartDate()));
     }
 
-    public boolean isEqualEndDate(Planner planner, PlannerRecommendRequestDto recommendRequestDto){
+    public boolean isEqualEndDate(Planner planner, PlannerRecommendRequestDto recommendRequestDto) {
         return planner.getEnd_date().toString().equals(transportDateFormat(recommendRequestDto.getEndDate()));
     }
 
-    public boolean isEqualConcept(Planner planner, PlannerRecommendRequestDto recommendRequestDto){
+    public boolean isEqualConcept(Planner planner, PlannerRecommendRequestDto recommendRequestDto) {
         return planner.getConcept().equals(recommendRequestDto.getConcept());
     }
 
-    public boolean isAdmin(Planner planner){
+    public boolean isAdmin(Planner planner) {
         return planner.getUsers().getRole().equals(Role.ADMIN);
     }
 
-    public boolean isMeetRequirementForRecommendPlanner(Planner planner, PlannerRecommendRequestDto recommendRequestDto){
-        if(!isEqualStartDate(planner,recommendRequestDto)){
+    public boolean isMeetRequirementForRecommendPlanner(Planner planner, PlannerRecommendRequestDto recommendRequestDto) {
+        if (!isEqualStartDate(planner, recommendRequestDto)) {
             return false;
         }
 
-        if(!isEqualEndDate(planner,recommendRequestDto)){
+        if (!isEqualEndDate(planner, recommendRequestDto)) {
             return false;
         }
 
-        if(!isEqualConcept(planner,recommendRequestDto)){
-            return false;
-        }
+        return isEqualConcept(planner, recommendRequestDto);
 
 //        if(!isAdmin(planner)){
 //            return false;
 //        }
-
-        return true;
     }
 
-    public int creatRandomNumber(List<Planner> recommendPlannerList){
-        if(recommendPlannerList.size() == 0){
+    public int creatRandomNumber(List<Planner> recommendPlannerList) {
+        if (recommendPlannerList.size() == 0) {
             return -1;
         }
         Random random = new Random();
         return random.nextInt(recommendPlannerList.size()) + 1;
     }
 
-    public String transportDateFormat(Date date){
+    public String transportDateFormat(Date date) {
         SimpleDateFormat transportDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0");
         return transportDate.format(date);
     }

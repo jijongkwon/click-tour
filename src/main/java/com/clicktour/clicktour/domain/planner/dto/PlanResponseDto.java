@@ -16,7 +16,7 @@ public class PlanResponseDto {
     private Float x;
     private Float y;
 
-    public PlanResponseDto(Plan plan){
+    public PlanResponseDto(Plan plan) {
         this.id = plan.getId();
         this.name = plan.getName();
         this.memo = plan.getMemo();

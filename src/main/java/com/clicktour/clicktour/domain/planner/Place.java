@@ -3,7 +3,6 @@ package com.clicktour.clicktour.domain.planner;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 
@@ -25,12 +24,12 @@ public class Place {
     private Planner planner;
 
     @Builder
-    public Place(String place, Planner planner){
+    public Place(String place, Planner planner) {
         this.place = place;
         this.planner = planner;
     }
 
-    public void update(String place){
+    public void update(String place) {
         this.place = place;
     }
 }

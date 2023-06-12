@@ -11,7 +11,7 @@ public class UserLoginRequestDto {
     private String loginId;
     private String loginPassword;
 
-    public UserLoginRequestDto(Users users){
+    public UserLoginRequestDto(Users users) {
         this.loginId = users.getLoginId();
         this.loginPassword = users.getLoginPassword();
     }

@@ -11,7 +11,7 @@ public class BoardUpdateRequestDto {
     private String content;
 
     @Builder
-    public BoardUpdateRequestDto(String title, String content){
+    public BoardUpdateRequestDto(String title, String content) {
         this.title = title;
         this.content = content;
     }

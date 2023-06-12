@@ -24,12 +24,12 @@ public class BoardService {
     private final CommentsRepository commentsRepository;
 
     @Transactional
-    public Board saveBoard(BoardSaveRequestDto requestDto){
+    public Board saveBoard(BoardSaveRequestDto requestDto) {
         Optional<Users> users = usersRepository.findByNickname(requestDto.getNickname());
 
-        if(users.isEmpty()){
+        if (users.isEmpty()) {
             return null;
-        };
+        }
 
         requestDto.setUsers(users.get());
 
@@ -37,17 +37,17 @@ public class BoardService {
     }
 
     @Transactional
-    public List<BoardResponseDto> readBoardList(){
+    public List<BoardResponseDto> readBoardList() {
         return boardRepository.findAllDesc().
-                stream().map(BoardResponseDto :: new).collect(Collectors.toList());
+                stream().map(BoardResponseDto::new).collect(Collectors.toList());
     }
 
     @Transactional
-    public BoardDetailResponseDto readDetailBoard(Long id){
+    public BoardDetailResponseDto readDetailBoard(Long id) {
 
         Board board = boardRepository.findById(id).orElse(null);
 
-        if(board == null){
+        if (board == null) {
             return null;
         }
 
@@ -57,12 +57,12 @@ public class BoardService {
     }
 
     @Transactional
-    public CommentSaveRequestDto saveComments(Long id, String nickname, CommentSaveRequestDto commentSaveRequestDto){
+    public CommentSaveRequestDto saveComments(Long id, String nickname, CommentSaveRequestDto commentSaveRequestDto) {
 
         Users users = usersRepository.findByNickname(nickname).orElse(null);
         Board board = boardRepository.findById(id).orElse(null);
 
-        if(board == null){
+        if (board == null) {
             return null;
         }
         commentSaveRequestDto.setBoard(board);
@@ -74,10 +74,10 @@ public class BoardService {
     }
 
     @Transactional
-    public Board updateBoard(Long id , String nickname, BoardUpdateRequestDto updateRequestDto){
+    public Board updateBoard(Long id, String nickname, BoardUpdateRequestDto updateRequestDto) {
         Board board = boardRepository.findById(id).orElse(null);
 
-        if(board == null || !board.getUsers().getNickname().equals(nickname)){
+        if (board == null || !board.getUsers().getNickname().equals(nickname)) {
             return null;
         }
 
@@ -87,10 +87,10 @@ public class BoardService {
     }
 
     @Transactional
-    public Comments updateComment(Long id, String nickname, CommentUpdateRequestDto commentUpdateRequestDto){
+    public Comments updateComment(Long id, String nickname, CommentUpdateRequestDto commentUpdateRequestDto) {
         Comments comments = commentsRepository.findById(id).orElse(null);
 
-        if(comments == null || !comments.checkUser(nickname)){
+        if (comments == null || !comments.checkUser(nickname)) {
             return null;
         }
 
@@ -99,10 +99,10 @@ public class BoardService {
     }
 
     @Transactional
-    public Board deleteBoard(Long id, String nickname){
+    public Board deleteBoard(Long id, String nickname) {
         Board board = boardRepository.findById(id).orElse(null);
 
-        if(board == null || !board.getUsers().getNickname().equals(nickname)){
+        if (board == null || !board.getUsers().getNickname().equals(nickname)) {
             return null;
         }
 
@@ -112,10 +112,10 @@ public class BoardService {
     }
 
     @Transactional
-    public Comments deleteComment(Long id, String nickname){
+    public Comments deleteComment(Long id, String nickname) {
         Comments comments = commentsRepository.findById(id).orElse(null);
 
-        if(comments == null || !comments.checkUser(nickname)){
+        if (comments == null || !comments.checkUser(nickname)) {
             return null;
         }
 

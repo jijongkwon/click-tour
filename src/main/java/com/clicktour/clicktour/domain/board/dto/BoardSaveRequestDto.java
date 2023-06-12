@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Optional;
-
 @Getter
 @NoArgsConstructor
 public class BoardSaveRequestDto {
@@ -17,13 +15,13 @@ public class BoardSaveRequestDto {
     private Users users;
 
     @Builder
-    public BoardSaveRequestDto(String title, String content, String nickname){
+    public BoardSaveRequestDto(String title, String content, String nickname) {
         this.title = title;
         this.content = content;
         this.nickname = nickname;
     }
 
-    public Board toEntity(){
+    public Board toEntity() {
         return Board.builder()
                 .title(title)
                 .content(content)

@@ -25,7 +25,7 @@ public class PlannerUpdateRequestDto {
 
     @Builder
     public PlannerUpdateRequestDto(Long id, String title, String intro, Date start_date, Date end_date, String concept,
-                                 String visibility, List<Plan> planList, List<Place> placeList) {
+                                   String visibility, List<Plan> planList, List<Place> placeList) {
         this.id = id;
         this.title = title;
         this.intro = intro;

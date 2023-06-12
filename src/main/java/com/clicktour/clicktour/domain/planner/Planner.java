@@ -68,7 +68,7 @@ public class Planner extends BaseTimeEntity {
     }
 
     public void update(String title, Date start_date, Date end_date, String intro,
-                       String concept, String visibility){
+                       String concept, String visibility) {
         this.title = title;
         this.start_date = start_date;
         this.end_date = end_date;

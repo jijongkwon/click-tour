@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PlaceResponseDto {
     private String place;
-    public PlaceResponseDto(Place place){
+
+    public PlaceResponseDto(Place place) {
         this.place = place.getPlace();
     }
 }

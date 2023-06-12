@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class UsersService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserJoinRequestDto register(UserJoinRequestDto userJoinRequestDto){
+    public UserJoinRequestDto register(UserJoinRequestDto userJoinRequestDto) {
         userJoinRequestDto.setLoginPassword(passwordEncoder.encode(userJoinRequestDto.getLoginPassword()));
         usersRepository.save(userJoinRequestDto.toEntity());
         return userJoinRequestDto;
@@ -36,7 +37,7 @@ public class UsersService {
     @Transactional
     public String login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
         Optional<Users> users = usersRepository.findByLoginId(userLoginRequestDto.getLoginId());
-        if(users.isEmpty()){
+        if (users.isEmpty()) {
             return "notFoundId";
         }
         if (!passwordEncoder.matches(userLoginRequestDto.getLoginPassword(), users.get().getLoginPassword())) {
@@ -52,8 +53,7 @@ public class UsersService {
 
         try {
             users = usersRepository.findByLoginId(jwtTokenProvider.getUserPK(jwtToken));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
 
@@ -62,10 +62,11 @@ public class UsersService {
 
     /**
      * 회원가입 유효성 검사
+     *
      * @param bindingResult
      */
-    public void checkUserValidate(BindingResult bindingResult){
-        if(bindingResult.hasErrors()) {
+    public void checkUserValidate(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             List<String> errorList =
                     bindingResult.getFieldErrors()
                             .stream()

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -19,7 +18,7 @@ public class BoardResponseDto {
     private LocalDate modifiedDate;
 
 
-    public BoardResponseDto(Board board){
+    public BoardResponseDto(Board board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.nickname = board.getUsers().getNickname();

@@ -10,19 +10,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 class UsersServiceTest {
-    @InjectMocks
-    private UsersService usersService;
-
-    @Mock
-    private UsersRepository usersRepository;
-
-    @Mock
-    private PasswordEncoder passwordEncoder;
-
     String loginId = "id";
     String name = "name";
     String nickname = "test";
@@ -30,6 +22,12 @@ class UsersServiceTest {
     String loginPassword = "pw";
     int age = 1;
     String gender = "man";
+    @InjectMocks
+    private UsersService usersService;
+    @Mock
+    private UsersRepository usersRepository;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @Test
     void register() {
