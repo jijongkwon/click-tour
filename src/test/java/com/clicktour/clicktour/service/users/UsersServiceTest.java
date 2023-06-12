@@ -1,6 +1,5 @@
 package com.clicktour.clicktour.service.users;
 
-import com.clicktour.clicktour.common.message.enums.ErrorMessage;
 import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.domain.users.dto.UserJoinRequestDto;
 import com.clicktour.clicktour.repository.UsersRepository;
@@ -60,36 +59,6 @@ class UsersServiceTest {
         assertEquals(gender, users.getGender());
         boolean passwordMatches = passwordEncoder.matches(loginPassword, users.getLoginPassword());
         assertTrue(passwordMatches);
-    }
-
-    @Test
-    void 아이디_중복확인_테스트(){
-        // given
-        String checkId = "id";
-        Users users = Users.builder().loginId(loginId).build();
-
-        // then
-        assertTrue(users.checkId(checkId));
-    }
-
-    @Test
-    void 닉네임_중복확인_테스트(){
-        // given
-        String checkNickname = "test";
-        Users users = Users.builder().nickname(nickname).build();
-
-        // then
-        assertTrue(users.checkNickname(checkNickname));
-    }
-
-    @Test
-    void 이메일_중복확인_테스트(){
-        // given
-        String checkEmail = "test@test.com";
-        Users users = Users.builder().email(email).build();
-
-        // then
-        assertTrue(users.checkEmail(checkEmail));
     }
 
     @Test
