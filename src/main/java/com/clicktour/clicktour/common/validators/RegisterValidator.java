@@ -40,12 +40,12 @@ public class RegisterValidator implements Validator {
         }
 
         // 아이디 중복 체크
-        if (usersRepository.existsByLoginId(userJoinRequestDto.getEmail())) {
+        if (usersRepository.existsByLoginId(userJoinRequestDto.getLoginId())) {
             errors.rejectValue("loginId", "400", "아이디 중복");
         }
 
         // 닉네임 중복 체크
-        if (usersRepository.existsByNickname(userJoinRequestDto.getEmail())) {
+        if (usersRepository.existsByNickname(userJoinRequestDto.getNickname())) {
             errors.rejectValue("nickname", "400", "닉네임 중복");
         }
     }
