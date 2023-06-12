@@ -23,7 +23,7 @@ class RegisterValidatorTest {
     private UsersRepository usersRepository;
 
     @Test
-    public void 아이디_중복_확인_테스트(){
+    public void 이메일_중복_확인_테스트(){
         // Given
         UserJoinRequestDto userJoinRequestDto = UserJoinRequestDto.builder()
                 .email("test@example.com")
@@ -41,4 +41,22 @@ class RegisterValidatorTest {
         assertEquals("이메일 중복", errors.getFieldError("email").getDefaultMessage());
     }
 
+    @Test
+    public void 아이디_중복_확인_테스트(){
+        // Given
+        UserJoinRequestDto userJoinRequestDto = UserJoinRequestDto.builder()
+                .loginId("test")
+                .build();
+
+
+        Mockito.when(usersRepository.existsByLoginId("test")).thenReturn(true);
+
+        // When
+        Errors errors = new BeanPropertyBindingResult(userJoinRequestDto, "userJoinRequestDto");
+        registerValidator.validate(userJoinRequestDto, errors);
+
+        // Then
+        assertTrue(errors.hasErrors());
+        assertEquals("아이디 중복", errors.getFieldError("loginId").getDefaultMessage());
+    }
 }
