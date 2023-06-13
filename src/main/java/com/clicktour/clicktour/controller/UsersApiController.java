@@ -4,7 +4,6 @@ import com.clicktour.clicktour.common.dto.ExceptionDto;
 import com.clicktour.clicktour.common.dto.ResponseDto;
 import com.clicktour.clicktour.common.enums.ErrorMessage;
 import com.clicktour.clicktour.common.enums.SuccessMessage;
-import com.clicktour.clicktour.common.validators.RegisterValidator;
 import com.clicktour.clicktour.config.dto.JwtTokenResponseDto;
 import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
 import com.clicktour.clicktour.domain.users.dto.UserJoinRequestDto;
@@ -24,17 +23,11 @@ import javax.validation.Valid;
 @RequestMapping("api/v1/users")
 public class UsersApiController {
     private final UsersService usersService;
-    private final RegisterValidator registerValidator;
 
     // 회원가입
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserJoinRequestDto userJoinRequestDto, BindingResult bindingResult) {
-        registerValidator.validate(userJoinRequestDto, bindingResult);
-
-        usersService.checkUserValidate(bindingResult);
-
-        usersService.register(userJoinRequestDto);
-
+        usersService.register(userJoinRequestDto, bindingResult);
         return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_REGISTER), HttpStatus.OK);
     }
 

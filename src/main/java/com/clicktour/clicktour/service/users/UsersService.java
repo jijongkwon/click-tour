@@ -1,6 +1,7 @@
 package com.clicktour.clicktour.service.users;
 
 import com.clicktour.clicktour.common.exception.NotValidException;
+import com.clicktour.clicktour.common.validators.RegisterValidator;
 import com.clicktour.clicktour.config.security.JwtTokenProvider;
 import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
@@ -26,12 +27,13 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final RegisterValidator registerValidator;
 
     @Transactional
-    public UserJoinRequestDto register(UserJoinRequestDto userJoinRequestDto) {
+    public void register(UserJoinRequestDto userJoinRequestDto, BindingResult bindingResult) {
+        checkUserValidate(userJoinRequestDto, bindingResult);
         userJoinRequestDto.setLoginPassword(passwordEncoder.encode(userJoinRequestDto.getLoginPassword()));
         usersRepository.save(userJoinRequestDto.toEntity());
-        return userJoinRequestDto;
     }
 
     @Transactional
@@ -65,7 +67,8 @@ public class UsersService {
      *
      * @param bindingResult
      */
-    public void checkUserValidate(BindingResult bindingResult) {
+    public void checkUserValidate(UserJoinRequestDto userJoinRequestDto, BindingResult bindingResult) {
+        registerValidator.validate(userJoinRequestDto,bindingResult);
         if (bindingResult.hasErrors()) {
             List<String> errorList =
                     bindingResult.getFieldErrors()
