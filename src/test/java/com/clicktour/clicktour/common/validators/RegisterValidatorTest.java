@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,12 +33,12 @@ class RegisterValidatorTest {
         Mockito.when(usersRepository.existsByEmail("test@example.com")).thenReturn(true);
 
         // When
-        Errors errors = new BeanPropertyBindingResult(userJoinRequestDto, "userJoinRequestDto");
-        registerValidator.validate(userJoinRequestDto, errors);
+        BindingResult bindingResult = new BeanPropertyBindingResult(userJoinRequestDto, "userJoinRequestDto");
+        registerValidator.validate(userJoinRequestDto, bindingResult);
 
         // Then
-        assertTrue(errors.hasErrors());
-        assertEquals("이메일 중복", errors.getFieldError("email").getDefaultMessage());
+        assertTrue(bindingResult.hasErrors());
+        assertEquals("이메일 중복", bindingResult.getFieldError("email").getDefaultMessage());
     }
 
     @Test
@@ -52,12 +52,12 @@ class RegisterValidatorTest {
         Mockito.when(usersRepository.existsByLoginId("test")).thenReturn(true);
 
         // When
-        Errors errors = new BeanPropertyBindingResult(userJoinRequestDto, "userJoinRequestDto");
-        registerValidator.validate(userJoinRequestDto, errors);
+        BindingResult bindingResult = new BeanPropertyBindingResult(userJoinRequestDto, "userJoinRequestDto");
+        registerValidator.validate(userJoinRequestDto, bindingResult);
 
         // Then
-        assertTrue(errors.hasErrors());
-        assertEquals("아이디 중복", errors.getFieldError("loginId").getDefaultMessage());
+        assertTrue(bindingResult.hasErrors());
+        assertEquals("아이디 중복", bindingResult.getFieldError("loginId").getDefaultMessage());
     }
 
     @Test
@@ -71,11 +71,11 @@ class RegisterValidatorTest {
         Mockito.when(usersRepository.existsByNickname("test")).thenReturn(true);
 
         // When
-        Errors errors = new BeanPropertyBindingResult(userJoinRequestDto, "userJoinRequestDto");
-        registerValidator.validate(userJoinRequestDto, errors);
+        BindingResult bindingResult = new BeanPropertyBindingResult(userJoinRequestDto, "userJoinRequestDto");
+        registerValidator.validate(userJoinRequestDto, bindingResult);
 
         // Then
-        assertTrue(errors.hasErrors());
-        assertEquals("닉네임 중복", errors.getFieldError("nickname").getDefaultMessage());
+        assertTrue(bindingResult.hasErrors());
+        assertEquals("닉네임 중복", bindingResult.getFieldError("nickname").getDefaultMessage());
     }
 }
