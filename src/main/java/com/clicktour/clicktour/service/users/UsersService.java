@@ -68,7 +68,7 @@ public class UsersService {
      * @param bindingResult
      */
     public void checkUserValidate(UserJoinRequestDto userJoinRequestDto, BindingResult bindingResult) {
-        registerValidator.validate(userJoinRequestDto,bindingResult);
+        registerValidator.validate(userJoinRequestDto, bindingResult);
         if (bindingResult.hasErrors()) {
             List<String> errorList =
                     bindingResult.getFieldErrors()

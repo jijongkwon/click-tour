@@ -31,7 +31,12 @@ public class UsersApiController {
         return new ResponseEntity<>(new ResponseDto(SuccessMessage.SUCCESS_REGISTER), HttpStatus.OK);
     }
 
-    // 로그인
+    /**
+     * 로그인
+     *
+     * @param userLoginRequestDto
+     * @return responseEntity
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
         JwtTokenResponseDto jwtTokenResponseDto = new JwtTokenResponseDto(usersService.login(userLoginRequestDto));

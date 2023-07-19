@@ -25,6 +25,5 @@ public class CustomUserDetailService implements UserDetailsService {
             Users users = optional.get();
             return new SecurityUser(users);
         }
-
     }
 }
