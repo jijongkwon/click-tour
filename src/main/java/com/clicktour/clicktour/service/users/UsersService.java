@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +36,7 @@ public class UsersService {
     }
 
     @Transactional
-    public String login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
+    public String login(UserLoginRequestDto userLoginRequestDto) {
         Optional<Users> users = usersRepository.findByLoginId(userLoginRequestDto.getLoginId());
         if (users.isEmpty()) {
             return "notFoundId";
