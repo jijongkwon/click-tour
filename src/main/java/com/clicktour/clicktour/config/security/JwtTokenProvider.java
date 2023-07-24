@@ -24,11 +24,11 @@ public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
 
-    @Value("${spring.jwt.secret}")
+    @Value("${spring.jwt.access-secret-key}")
     private String secretKey;
-    @Value("${spring.jwt.accessValidTime}")
+    @Value("${spring.jwt.access-valid-time}")
     private long accessTokenValidTime;
-    @Value("${spring.jwt.refreshValidTime}")
+    @Value("${spring.jwt.refresh-valid-time}")
     private long refreshTokenValidTime;
 
     // 객체 초기화, secretKey를 Base64로 인코딩
