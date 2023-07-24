@@ -1,5 +1,6 @@
-package com.clicktour.clicktour.config.security;
+package com.clicktour.clicktour.service.users;
 
+import com.clicktour.clicktour.config.security.SecurityUser;
 import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
