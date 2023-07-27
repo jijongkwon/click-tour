@@ -1,6 +1,7 @@
 package com.clicktour.clicktour.service.users;
 
 
+import com.clicktour.clicktour.common.exception.NotValidException;
 import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.repository.UsersRepository;
 import org.junit.jupiter.api.Test;
@@ -11,8 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,5 +38,17 @@ public class UnitUserServiceTest {
         // then
         assertNotNull(result);
         assertEquals(mockUsers,result);
+    }
+
+    @Test
+    void 아이디_확인_예외처리() {
+        // given
+        String loginId = "nonExistentUser";
+
+        // when
+        when(usersRepository.findByLoginId(loginId)).thenReturn(Optional.empty());
+
+        // then
+        assertThrows(NotValidException.class, () -> usersService.checkId(loginId));
     }
 }
