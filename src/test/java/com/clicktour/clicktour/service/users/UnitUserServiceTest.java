@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -23,6 +24,9 @@ public class UnitUserServiceTest {
 
     @Mock
     private UsersRepository usersRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @Test
     void 아이디_화인(){
@@ -51,4 +55,18 @@ public class UnitUserServiceTest {
         // then
         assertThrows(NotValidException.class, () -> usersService.checkId(loginId));
     }
+
+    @Test
+    void 비밀번호_확인(){
+        // given
+        String userPassword = "test";
+        String requestPassword = "test";
+
+        // when
+        when(passwordEncoder.matches(requestPassword, userPassword)).thenReturn(true);
+
+        // then
+        assertDoesNotThrow(()-> usersService.checkPassword(userPassword,requestPassword));
+    }
+
 }
