@@ -14,13 +14,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice // 사전 컨트롤러
 public class CustomizedGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * 회원가입
+     * @param ex
+     * @return code, message, errorList
+     */
     @ExceptionHandler(NotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<NotValidExceptionResponseDto> handleCustomizedNotValidException(NotValidException ex) {
         return new ResponseEntity<>(
                 NotValidExceptionResponseDto.builder()
                         .stateCode(HttpStatus.BAD_REQUEST.value())
-                        .message("아이디 또는 이메일 또는 닉네임 중복")
                         .errors(ex.getErrorList())
                         .build(), HttpStatus.BAD_REQUEST
         );
