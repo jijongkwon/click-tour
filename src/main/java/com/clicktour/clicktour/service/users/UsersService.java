@@ -1,5 +1,6 @@
 package com.clicktour.clicktour.service.users;
 
+import com.clicktour.clicktour.common.enums.ErrorMessage;
 import com.clicktour.clicktour.common.exception.NotValidException;
 import com.clicktour.clicktour.common.validators.RegisterValidator;
 import com.clicktour.clicktour.config.security.JwtTokenProvider;
@@ -35,17 +36,17 @@ public class UsersService {
         usersRepository.save(userJoinRequestDto.toEntity());
     }
 
-    @Transactional
+    /**
+     * 로그인
+     * @param userLoginRequestDto
+     * @return Jwt token
+     */
     public String login(UserLoginRequestDto userLoginRequestDto) {
-        Optional<Users> users = usersRepository.findByLoginId(userLoginRequestDto.getLoginId());
-        if (users.isEmpty()) {
-            return "notFoundId";
-        }
-        if (!passwordEncoder.matches(userLoginRequestDto.getLoginPassword(), users.get().getLoginPassword())) {
-            return "mismatchPassword";
-        }
+        Users users = checkId(userLoginRequestDto.getLoginId());
 
-        return jwtTokenProvider.createToken(users.get().getLoginId(), users.get().getRole());
+        checkPassword(users.getLoginPassword(), userLoginRequestDto.getLoginPassword());
+
+        return jwtTokenProvider.createToken(users.getLoginId(), users.getRole());
     }
 
     @Transactional
@@ -68,6 +69,7 @@ public class UsersService {
      */
     public void checkUserValidate(UserJoinRequestDto userJoinRequestDto, BindingResult bindingResult) {
         registerValidator.validate(userJoinRequestDto, bindingResult);
+
         if (bindingResult.hasErrors()) {
             List<String> errorList =
                     bindingResult.getFieldErrors()
@@ -76,6 +78,28 @@ public class UsersService {
                             .collect(Collectors.toList());
 
             throw new NotValidException(errorList);
+        }
+    }
+
+    /**
+     * check Id
+     * @param loginId
+     * @return Users
+     */
+    @Transactional
+    public Users checkId(String loginId){
+        return usersRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new NotValidException(List.of(ErrorMessage.NOT_FOUND_ID.getMessage())));
+    }
+
+    /**
+     * check password
+     * @param userPassword
+     * @param requestPassword
+     */
+    public void checkPassword(String userPassword, String requestPassword){
+        if (!passwordEncoder.matches(requestPassword, userPassword)) {
+            throw new NotValidException(List.of(ErrorMessage.MISMATCH_PASSWORD.getMessage()));
         }
     }
 }
