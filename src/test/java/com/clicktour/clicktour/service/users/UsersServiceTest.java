@@ -3,6 +3,7 @@ package com.clicktour.clicktour.service.users;
 import com.clicktour.clicktour.common.validators.RegisterValidator;
 import com.clicktour.clicktour.domain.users.Users;
 import com.clicktour.clicktour.domain.users.dto.UserJoinRequestDto;
+import com.clicktour.clicktour.domain.users.dto.UserLoginRequestDto;
 import com.clicktour.clicktour.repository.UsersRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UsersServiceTest {
@@ -58,6 +58,34 @@ class UsersServiceTest {
 
     @Test
     void login() {
+        // given
+        UserJoinRequestDto userJoinRequestDto = UserJoinRequestDto.builder()
+                .loginId("test")
+                .name("name")
+                .nickname("test")
+                .email("test@email.com")
+                .loginPassword("test")
+                .age(3)
+                .gender("man")
+                .build();
+
+        // when
+        BindingResult bindingResult = new BeanPropertyBindingResult(userJoinRequestDto, "userJoinRequestDto");
+        usersService.register(userJoinRequestDto, bindingResult);
+
+        Users users = usersRepository.findByNickname(userJoinRequestDto.getNickname()).orElseThrow(() ->
+                new IllegalArgumentException("닉네임이 일치하지 않음"));
+
+        UserLoginRequestDto userLoginRequestDto = UserLoginRequestDto.builder()
+                .loginId("test")
+                .loginPassword("test")
+                .build();
+
+        // when
+        String jwt = usersService.login(userLoginRequestDto);
+
+        // then
+        assertNotNull(jwt);
     }
 
     @Test
