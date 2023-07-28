@@ -69,4 +69,15 @@ public class UnitUserServiceTest {
         assertDoesNotThrow(()-> usersService.checkPassword(userPassword,requestPassword));
     }
 
+    @Test
+    void 비밀번호_확인_예외처리(){
+        // given
+        String userPassword = "test";
+        String requestPassword = "diff";
+
+        // when
+
+        // then
+        assertThrows(NotValidException.class, () -> usersService.checkPassword(userPassword,requestPassword));
+    }
 }
