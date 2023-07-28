@@ -40,18 +40,6 @@ public class UsersApiController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginRequestDto userLoginRequestDto) {
         JwtTokenResponseDto jwtTokenResponseDto = new JwtTokenResponseDto(usersService.login(userLoginRequestDto));
-        ExceptionDto messageResponseDto;
-
-        // Id가 존재하지 않을 때
-        if (jwtTokenResponseDto.getJwtToken().equals("notFoundId")) {
-            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_ID), HttpStatus.NOT_FOUND);
-        }
-
-        // 비밀번호가 틀릴 때
-        if (jwtTokenResponseDto.getJwtToken().equals("mismatchPassword")) {
-            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.MISMATCH_PASSWORD), HttpStatus.BAD_REQUEST);
-        }
-
         return new ResponseEntity<>(jwtTokenResponseDto, HttpStatus.OK);
     }
 
