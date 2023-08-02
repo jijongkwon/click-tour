@@ -2,7 +2,9 @@ package com.clicktour.clicktour.service.users;
 
 
 import com.clicktour.clicktour.common.exception.NotValidException;
+import com.clicktour.clicktour.config.security.JwtTokenProvider;
 import com.clicktour.clicktour.domain.users.Users;
+import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
 import com.clicktour.clicktour.repository.UsersRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +30,12 @@ public class UnitUserServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Mock
+    private HttpServletRequest httpServletRequest;
 
     @Test
     void 아이디_화인(){
@@ -79,5 +88,26 @@ public class UnitUserServiceTest {
 
         // then
         assertThrows(NotValidException.class, () -> usersService.checkPassword(userPassword,requestPassword));
+    }
+
+    @Test
+    public void 유저정보확인() {
+        // given
+        String jwtToken = "valid_jwt_token";
+        Users user = Users.builder()
+                .loginId("testUser")
+                .nickname("test")
+                .build();
+
+        when(httpServletRequest.getHeader("X-AUTH-TOKEN")).thenReturn(jwtToken);
+        when(jwtTokenProvider.getUserPK(jwtToken)).thenReturn("testUser");
+        when(usersRepository.findByLoginId("testUser")).thenReturn(Optional.of(user));
+
+        // when
+        UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(httpServletRequest);
+
+        // then
+        assertNotNull(userInfoResponseDto);
+        assertEquals("test", userInfoResponseDto.getNickname());
     }
 }
