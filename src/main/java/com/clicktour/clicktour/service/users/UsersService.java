@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,17 +49,18 @@ public class UsersService {
         return jwtTokenProvider.createToken(users.getLoginId(), users.getRole());
     }
 
+    /**
+     * 유저 정보 가져오기
+     * @param httpServletRequest
+     * @return UserInfoResponseDto
+     */
     @Transactional
-    public UserInfoResponseDto getUserInfo(String jwtToken) {
-        Optional<Users> users;
+    public UserInfoResponseDto getUserInfo(HttpServletRequest httpServletRequest) {
+        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
 
-        try {
-            users = usersRepository.findByLoginId(jwtTokenProvider.getUserPK(jwtToken));
-        } catch (Exception e) {
-            return null;
-        }
+        Users users = checkId(jwtTokenProvider.getUserPK(jwtToken));
 
-        return users.map(UserInfoResponseDto::new).orElse(null);
+        return new UserInfoResponseDto(users);
     }
 
     /**
