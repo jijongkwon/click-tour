@@ -1,8 +1,6 @@
 package com.clicktour.clicktour.controller;
 
-import com.clicktour.clicktour.common.dto.ExceptionDto;
 import com.clicktour.clicktour.common.dto.ResponseDto;
-import com.clicktour.clicktour.common.enums.ErrorMessage;
 import com.clicktour.clicktour.common.enums.SuccessMessage;
 import com.clicktour.clicktour.config.dto.JwtTokenResponseDto;
 import com.clicktour.clicktour.domain.users.dto.UserInfoResponseDto;
@@ -45,13 +43,7 @@ public class UsersApiController {
 
     @GetMapping("/info")
     public ResponseEntity<?> userInfo(HttpServletRequest httpServletRequest) {
-        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
-        UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(jwtToken);
-
-        if (userInfoResponseDto == null) {
-            return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_USER), HttpStatus.NOT_FOUND);
-        }
-
+        UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(httpServletRequest);
         return new ResponseEntity<>(userInfoResponseDto, HttpStatus.OK);
     }
 }

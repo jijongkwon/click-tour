@@ -40,9 +40,7 @@ public class BoardApiController {
     @PostMapping("/comments/post/{id}")
     public ResponseEntity<?> saveComments(@PathVariable Long id, @RequestBody CommentSaveRequestDto commentSaveRequestDto,
                                           HttpServletRequest httpServletRequest) {
-        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
-
-        if (boardService.saveComments(id, usersService.getUserInfo(jwtToken).getNickname(), commentSaveRequestDto) == null) {
+        if (boardService.saveComments(id, usersService.getUserInfo(httpServletRequest).getNickname(), commentSaveRequestDto) == null) {
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_BOARD), HttpStatus.NOT_FOUND);
         }
 
@@ -71,8 +69,7 @@ public class BoardApiController {
     @PutMapping("/list/update/{id}")
     public ResponseEntity<?> updateBoard(@PathVariable Long id, HttpServletRequest httpServletRequest,
                                          @RequestBody BoardUpdateRequestDto updateRequestDto) {
-        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
-        Board board = boardService.updateBoard(id, usersService.getUserInfo(jwtToken).getNickname(), updateRequestDto);
+        Board board = boardService.updateBoard(id, usersService.getUserInfo(httpServletRequest).getNickname(), updateRequestDto);
 
         if (board == null) {
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_BOARD), HttpStatus.NOT_FOUND);
@@ -84,8 +81,7 @@ public class BoardApiController {
     @PutMapping("/comments/update/{id}")
     public ResponseEntity<?> updateComments(@PathVariable Long id, HttpServletRequest httpServletRequest,
                                             @RequestBody CommentUpdateRequestDto commentUpdateRequestDto) {
-        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
-        Comments comments = boardService.updateComment(id, usersService.getUserInfo(jwtToken).getNickname(), commentUpdateRequestDto);
+        Comments comments = boardService.updateComment(id, usersService.getUserInfo(httpServletRequest).getNickname(), commentUpdateRequestDto);
 
         if (comments == null) {
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_COMMENT), HttpStatus.NOT_FOUND);
@@ -96,9 +92,8 @@ public class BoardApiController {
 
     @DeleteMapping("/list/delete/{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable Long id, HttpServletRequest httpServletRequest) {
-        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
 
-        Board board = boardService.deleteBoard(id, usersService.getUserInfo(jwtToken).getNickname());
+        Board board = boardService.deleteBoard(id, usersService.getUserInfo(httpServletRequest).getNickname());
 
         if (board == null) {
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_BOARD), HttpStatus.NOT_FOUND);
@@ -109,8 +104,7 @@ public class BoardApiController {
 
     @DeleteMapping("/comments/delete/{id}")
     private ResponseEntity<?> deleteComments(@PathVariable Long id, HttpServletRequest httpServletRequest) {
-        String jwtToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
-        Comments comments = boardService.deleteComment(id, usersService.getUserInfo(jwtToken).getNickname());
+        Comments comments = boardService.deleteComment(id, usersService.getUserInfo(httpServletRequest).getNickname());
 
         if (comments == null) {
             return new ResponseEntity<>(new ExceptionDto(ErrorMessage.NOT_FOUND_COMMENT), HttpStatus.NOT_FOUND);

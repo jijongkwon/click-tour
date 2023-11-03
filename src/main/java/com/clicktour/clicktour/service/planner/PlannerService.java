@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -80,8 +81,8 @@ public class PlannerService {
     }
 
     @Transactional
-    public List<PlannerResponseDto> findIndividualPlannerList(String jwtToken) {
-        UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(jwtToken);
+    public List<PlannerResponseDto> findIndividualPlannerList(HttpServletRequest httpServletRequest) {
+        UserInfoResponseDto userInfoResponseDto = usersService.getUserInfo(httpServletRequest);
         return plannerRepository.findByUsersId(userInfoResponseDto.getId()).
                 stream().map(PlannerResponseDto::new).
                 collect(Collectors.toList());
@@ -95,7 +96,7 @@ public class PlannerService {
     }
 
     @Transactional
-    public PlannerUpdateRequestDto updatePlanner(Long id, PlannerUpdateRequestDto requestDto) {
+    public void updatePlanner(Long id, PlannerUpdateRequestDto requestDto) {
 
         /* 플래너 수정 */
         Planner planner = plannerRepository.findById(id).orElseThrow(() -> new
@@ -114,9 +115,6 @@ public class PlannerService {
 
         /* 플레이스 수정 */
         updatePlace(requestDto, planner);
-
-
-        return requestDto;
     }
 
     @Transactional
@@ -177,7 +175,7 @@ public class PlannerService {
         List<Planner> recommendPlannerList = addRecommendPlannerList(allPlanners, recommendRequestDto);
 
         // 랜덤 번호 생성
-        int randomIndex = creatRandomNumber(recommendPlannerList) - 1;
+        int randomIndex = createRandomNumber(recommendPlannerList) - 1;
 
         if (randomIndex == -2) {
             return null;
@@ -248,8 +246,8 @@ public class PlannerService {
 //        }
     }
 
-    public int creatRandomNumber(List<Planner> recommendPlannerList) {
-        if (recommendPlannerList.size() == 0) {
+    public int createRandomNumber(List<Planner> recommendPlannerList) {
+        if (recommendPlannerList.isEmpty()) {
             return -1;
         }
         Random random = new Random();
